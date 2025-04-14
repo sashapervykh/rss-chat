@@ -3,3 +3,5 @@ export interface BaseComponentParameters {
   styles?: string[];
   text?: string;
 }
+
+export type Callback = () => void;
