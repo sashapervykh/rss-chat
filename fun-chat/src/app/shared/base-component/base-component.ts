@@ -16,4 +16,8 @@ export default class BaseComponent<T extends HTMLElement = HTMLElement> {
   public setTextContent(text: string) {
     this.node.textContent = text;
   }
+
+  public setAttribute(attribute: string, value: string) {
+    this.node.setAttribute(attribute, value);
+  }
 }
