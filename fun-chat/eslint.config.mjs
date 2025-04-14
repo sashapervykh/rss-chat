@@ -23,6 +23,7 @@ export default tseslint.config(
     rules: {
       'no-unused-expressions': 'error',
       'unicorn/better-regex': 'warn',
+      'max-lines-per-function': ['error', 40],
     },
   },
   {
