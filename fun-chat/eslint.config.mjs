@@ -1,12 +1,14 @@
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
-import eslintPluginUnicorn from "eslint-plugin-unicorn";
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
 
 export default tseslint.config(
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   eslintPluginUnicorn.configs.all,
+  eslintConfigPrettier,
   {
     languageOptions: {
       parserOptions: {
@@ -16,11 +18,11 @@ export default tseslint.config(
     },
     linterOptions: {
       noInlineConfig: true,
-      reportUnusedDisableDirectives: "error",
+      reportUnusedDisableDirectives: 'error',
     },
     rules: {
-      "no-unused-expressions": "error",
-      "unicorn/better-regex": "warn",
+      'no-unused-expressions': 'error',
+      'unicorn/better-regex': 'warn',
     },
-  }
+  },
 );
