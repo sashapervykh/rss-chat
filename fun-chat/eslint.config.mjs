@@ -25,4 +25,7 @@ export default tseslint.config(
       'unicorn/better-regex': 'warn',
     },
   },
+  {
+    ignores: ['build/**', 'dist/**', 'node_modules/'],
+  },
 );

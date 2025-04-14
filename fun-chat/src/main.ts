@@ -1,1 +1,2 @@
-const a =1;
+console.log('ad');
+console.log(2);
