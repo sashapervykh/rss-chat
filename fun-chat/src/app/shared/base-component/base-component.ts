@@ -9,14 +9,21 @@ export default class BaseComponent<T extends HTMLElement = HTMLElement> {
     if (parameters.text) this.setTextContent(parameters.text);
   }
 
-  public addListenerToClick(callback: Callback) {
-    this.node.addEventListener('click', () => {
-      callback();
+  public addListenerToEvent(
+    eventType: keyof HTMLElementEventMap,
+    callback: Callback,
+  ) {
+    this.node.addEventListener(eventType, (event: Event) => {
+      callback(event);
     });
   }
 
   public addStyles(styles: string[]) {
     this.node.classList.add(...styles);
+  }
+
+  public getNode() {
+    return this.node;
   }
 
   public setTextContent(text: string) {

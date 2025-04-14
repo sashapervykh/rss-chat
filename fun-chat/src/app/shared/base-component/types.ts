@@ -4,4 +4,4 @@ export interface BaseComponentParameters {
   text?: string;
 }
 
-export type Callback = () => void;
+export type Callback = (event: Event) => void;

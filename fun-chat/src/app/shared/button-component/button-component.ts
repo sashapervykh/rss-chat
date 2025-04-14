@@ -6,6 +6,6 @@ export default class ButtonComponent extends BaseComponent<HTMLButtonElement> {
     super({ tag: 'button' });
     if (parameters?.text) this.setTextContent(parameters.text);
     if (parameters?.onClickAction)
-      this.addListenerToClick(parameters.onClickAction);
+      this.addListenerToEvent('click', parameters.onClickAction);
   }
 }
