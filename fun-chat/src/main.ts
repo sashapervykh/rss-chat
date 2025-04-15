@@ -1,6 +1,6 @@
-import AboutPage from './app/page/about-page/about-page';
+import MainPage from './app/page/main-page/main-page';
 
 console.log('ad');
 console.log(2);
-const page = new AboutPage();
-page.createAboutPage();
+const page = new MainPage();
+page.createMainPage();

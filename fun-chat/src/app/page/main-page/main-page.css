@@ -1,0 +1,25 @@
+.about-wrapper {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 500px;
+  width: 80%;
+  text-align: center;
+}
+
+.about__h1 {
+  margin: 10px;
+  font-size: 30px;
+}
+
+.about__content {
+  margin: 5px;
+  font-size: 20px;
+}
+
+.about__button {
+  margin: 10px auto;
+  width: fit-content;
+  font-size: 20px;
+}
