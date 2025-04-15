@@ -31,9 +31,11 @@ export default class FooterComponent extends BaseComponent {
       styles: ['rslogo-wrapper', 'footer_element'],
     });
 
+    const gitHubLink = new BaseComponent({ tag: 'a', children: [githubLogo] });
+    gitHubLink.setAttribute('href', 'https://github.com/sashapervykh');
     const ghLogoWrapper = new BaseComponent({
       tag: 'div',
-      children: [githubLogo],
+      children: [gitHubLink],
       styles: ['ghlogo-wrapper', 'footer_element'],
     });
 
