@@ -1,7 +1,7 @@
-import ButtonComponent from '../shared/button-component/button-component';
-import FormComponent from '../shared/form-component/form-component';
-import InputComponent from '../shared/input-component/input-component';
-import MainComponent from '../shared/main-component/main-component';
+import ButtonComponent from '../../shared/button-component/button-component';
+import FormComponent from '../../shared/form-component/form-component';
+import InputComponent from '../../shared/input-component/input-component';
+import MainComponent from '../../shared/main-component/main-component';
 import './authorization-page.css';
 
 export default class AutorizationPage {

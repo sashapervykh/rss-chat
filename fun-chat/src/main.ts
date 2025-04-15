@@ -1,6 +1,6 @@
-import AutorizationPage from './app/page/page';
+import AboutPage from './app/page/about-page/about-page';
 
 console.log('ad');
 console.log(2);
-const page = new AutorizationPage();
-page.createAuthorizationPage();
+const page = new AboutPage();
+page.createAboutPage();
