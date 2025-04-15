@@ -1,6 +1,7 @@
 import MainComponent from '../../../../shared/main-component/main-component';
 import UserListArea from './user-list-area/user-list-area';
 import './chat-component.css';
+import ChatWindow from './chat-window/chat-window';
 
 export default class ChatComponent extends MainComponent {
   constructor() {
@@ -12,6 +13,7 @@ export default class ChatComponent extends MainComponent {
 
   addChatComponent() {
     const userListArea = new UserListArea();
-    this.addChildren([userListArea]);
+    const chatWindow = new ChatWindow();
+    this.addChildren([userListArea, chatWindow]);
   }
 }

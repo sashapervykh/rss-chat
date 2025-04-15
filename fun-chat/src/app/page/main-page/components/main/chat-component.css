@@ -1,4 +1,7 @@
 .chat-main {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+
   height: 80vh;
   margin-top: 0px;
 }

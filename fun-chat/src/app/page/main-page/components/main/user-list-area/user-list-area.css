@@ -1,4 +1,5 @@
 .user-list-area {
+  height: inherit;
   display: grid;
   grid-template-rows: 5% 95%;
 }

@@ -1,0 +1,5 @@
+.chat-window {
+  height: inherit;
+  display: grid;
+  grid-template-rows: 5% 95% 5%;
+}
