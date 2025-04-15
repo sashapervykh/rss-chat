@@ -3,7 +3,7 @@ import { ButtonComponentParameters } from './types';
 
 export default class ButtonComponent extends BaseComponent<HTMLButtonElement> {
   constructor(parameters?: ButtonComponentParameters) {
-    super({ tag: 'button' });
+    super({ tag: 'button', styles: parameters?.styles });
     if (parameters?.text) this.setTextContent(parameters.text);
     if (parameters?.onClickAction)
       this.addListenerToEvent('click', parameters.onClickAction);

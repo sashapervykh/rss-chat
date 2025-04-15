@@ -7,6 +7,11 @@ export default class BaseComponent<T extends HTMLElement = HTMLElement> {
     this.node = document.createElement(parameters.tag);
     if (parameters.styles) this.addStyles(parameters.styles);
     if (parameters.text) this.setTextContent(parameters.text);
+    if (parameters.children) this.addChildren(parameters.children);
+  }
+
+  public addChildren(children: BaseComponent[]) {
+    this.node.append(...children.map((child) => child.getNode()));
   }
 
   public addListenerToEvent(
@@ -24,6 +29,10 @@ export default class BaseComponent<T extends HTMLElement = HTMLElement> {
 
   public getNode() {
     return this.node;
+  }
+
+  public removeThisNode() {
+    this.node.remove();
   }
 
   public setTextContent(text: string) {

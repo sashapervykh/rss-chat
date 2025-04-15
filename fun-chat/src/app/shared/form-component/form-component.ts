@@ -4,9 +4,10 @@ import { FormComponentParameters } from './types';
 
 export default class FormComponent extends BaseComponent<HTMLFormElement> {
   constructor(parameters: FormComponentParameters) {
-    super({ tag: 'form' });
+    super({ tag: 'form', styles: parameters.styles });
 
     this.addListenerToSubmit(parameters.onSubmitAction);
+    this.addChildren(parameters.children);
   }
 
   addListenerToSubmit(onSubmitAction: Callback) {

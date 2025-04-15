@@ -1,0 +1,10 @@
+.authorization-form {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.authorization-element {
+  margin: 5px;
+}
