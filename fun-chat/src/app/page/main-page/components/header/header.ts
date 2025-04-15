@@ -1,5 +1,5 @@
-import BaseComponent from '../../../shared/base-component/base-component';
-import ButtonComponent from '../../../shared/button-component/button-component';
+import BaseComponent from '../../../../shared/base-component/base-component';
+import ButtonComponent from '../../../../shared/button-component/button-component';
 import './header-component.css';
 
 export default class HeaderComponent extends BaseComponent {

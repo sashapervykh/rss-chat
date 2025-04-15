@@ -1,0 +1,29 @@
+.footer {
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.footer_element {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  text-align: center;
+}
+
+.rslogo-wrapper {
+  height: 40px;
+  width: 100px;
+}
+
+.ghlogo-wrapper {
+  height: 40px;
+  width: fit-content;
+}
+
+.ghlogo {
+  display: flex;
+  margin: auto;
+  height: 40px;
+  width: 40px;
+}
