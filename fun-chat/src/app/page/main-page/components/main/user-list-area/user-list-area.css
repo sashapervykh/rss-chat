@@ -1,0 +1,18 @@
+.user-list-area {
+  display: grid;
+  grid-template-rows: 5% 95%;
+}
+
+.user-list {
+  height: auto;
+  max-height: inherit;
+  overflow-y: scroll;
+}
+
+.online {
+  color: green;
+}
+
+.offline {
+  color: gainsboro;
+}

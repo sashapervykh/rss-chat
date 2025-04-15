@@ -7,5 +7,6 @@ export default class InputComponent extends BaseComponent<HTMLInputElement> {
     if (parameters?.placeholder)
       this.setAttribute('placeholder', parameters.placeholder);
     if (parameters?.value) this.setAttribute('value', parameters.value);
+    if (parameters?.type) this.setAttribute('type', parameters.type);
   }
 }
