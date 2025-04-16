@@ -3,4 +3,6 @@ import startRouting from './app/router/router';
 
 const authorizationPage = new AutorizationPage();
 authorizationPage.createAuthorizationPage();
+
+history.replaceState('authorization', '', '/authorization');
 startRouting();

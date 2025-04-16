@@ -1,5 +1,6 @@
 import BaseComponent from '../../../../shared/base-component/base-component';
 import ButtonComponent from '../../../../shared/button-component/button-component';
+import { buttonToAbout } from '../../../../shared/button-to-about/button-to-about';
 import './header-component.css';
 
 export default class HeaderComponent extends BaseComponent {
@@ -21,16 +22,16 @@ export default class HeaderComponent extends BaseComponent {
       styles: ['header_content'],
     });
 
-    const infoButton = new ButtonComponent({
-      text: 'About',
-      styles: ['header_button'],
-    });
-
     const logOutButton = new ButtonComponent({
       text: 'Log Out',
       styles: ['header_button'],
     });
 
-    this.addChildren([userField, h1, infoButton, logOutButton]);
+    this.addChildren([
+      userField,
+      h1,
+      buttonToAbout(['header_button']),
+      logOutButton,
+    ]);
   }
 }

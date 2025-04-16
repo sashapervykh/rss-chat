@@ -1,8 +1,8 @@
 import ButtonComponent from '../../shared/button-component/button-component';
+import { buttonToAbout } from '../../shared/button-to-about/button-to-about';
 import FormComponent from '../../shared/form-component/form-component';
 import InputComponent from '../../shared/input-component/input-component';
 import MainComponent from '../../shared/main-component/main-component';
-import AboutPage from '../about-page/about-page';
 import './authorization-page.css';
 
 export default class AutorizationPage {
@@ -22,17 +22,7 @@ export default class AutorizationPage {
           text: 'Log In',
           styles: ['authorization-element'],
         }),
-        new ButtonComponent({
-          text: 'About',
-          styles: ['authorization-element'],
-          onClickAction: () => {
-            document.body.replaceChildren();
-
-            history.pushState('about', '', '/about');
-            const aboutPage = new AboutPage();
-            aboutPage.createAboutPage();
-          },
-        }),
+        buttonToAbout(['authorization-element']),
       ],
       onSubmitAction: (event: Event) => {
         event.preventDefault();
