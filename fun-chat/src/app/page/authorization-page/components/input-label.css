@@ -1,0 +1,15 @@
+.label_first-line {
+  display: grid;
+  grid-template-columns: 25% 75%;
+  margin: 5px;
+}
+
+.label_input {
+  max-width: inherit;
+  width: inherit;
+}
+
+.notice {
+  color: red;
+  font-size: 15px;
+}

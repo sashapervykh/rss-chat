@@ -7,5 +7,13 @@ export default class ButtonComponent extends BaseComponent<HTMLButtonElement> {
     if (parameters?.text) this.setTextContent(parameters.text);
     if (parameters?.onClickAction)
       this.addListenerToEvent('click', parameters.onClickAction);
+    if (parameters?.disabled) this.getNode().disabled = parameters.disabled;
+  }
+
+  public getNode() {
+    const node = super.getNode();
+    if (!(node instanceof HTMLButtonElement))
+      throw new Error('Button Element was not created');
+    return node;
   }
 }

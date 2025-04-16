@@ -1,5 +1,5 @@
 import AboutPage from '../page/about-page/about-page';
-import AutorizationPage from '../page/authorization-page/page';
+import AutorizationPage from '../page/authorization-page/authorization-page';
 import MainPage from '../page/main-page/main-page';
 
 export function routePages(state: string): void {

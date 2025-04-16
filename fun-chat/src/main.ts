@@ -1,4 +1,4 @@
-import AutorizationPage from './app/page/authorization-page/page';
+import AutorizationPage from './app/page/authorization-page/authorization-page';
 import startRouting from './app/router/router';
 
 const authorizationPage = new AutorizationPage();

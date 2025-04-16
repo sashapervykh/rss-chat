@@ -3,16 +3,24 @@ import { Callback } from '../base-component/types';
 import { FormComponentParameters } from './types';
 
 export default class FormComponent extends BaseComponent<HTMLFormElement> {
-  constructor(parameters: FormComponentParameters) {
-    super({ tag: 'form', styles: parameters.styles });
+  constructor(parameters?: FormComponentParameters) {
+    super({ tag: 'form', styles: parameters?.styles });
 
-    this.addListenerToSubmit(parameters.onSubmitAction);
-    this.addChildren(parameters.children);
+    if (parameters?.onSubmitAction)
+      this.addListenerToSubmit(parameters.onSubmitAction);
+    if (parameters?.children) this.addChildren(parameters.children);
   }
 
   addListenerToSubmit(onSubmitAction: Callback) {
     this.getNode().addEventListener('submit', (event: Event) => {
       onSubmitAction(event);
     });
+  }
+
+  returnTypeCheckedElement() {
+    const node = this.getNode();
+    if (!(node instanceof HTMLFormElement))
+      throw new Error('The form element was not created');
+    return node;
   }
 }

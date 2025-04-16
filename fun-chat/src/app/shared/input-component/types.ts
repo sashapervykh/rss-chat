@@ -3,4 +3,6 @@ export interface InputComponentParameters {
   placeholder?: string;
   styles: string[];
   type?: 'search';
+  required?: boolean;
+  minLength?: string;
 }

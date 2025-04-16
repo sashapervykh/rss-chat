@@ -4,4 +4,5 @@ export interface ButtonComponentParameters {
   text?: string;
   onClickAction?: Callback;
   styles: string[];
+  disabled?: boolean;
 }
