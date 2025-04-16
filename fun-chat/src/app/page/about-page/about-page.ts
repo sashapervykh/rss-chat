@@ -31,6 +31,9 @@ export default class AboutPage {
     const backButton = new ButtonComponent({
       text: 'Go Back',
       styles: ['about__button'],
+      onClickAction: () => {
+        history.back();
+      },
     });
     const infoWrapper = new BaseComponent({
       tag: 'div',
