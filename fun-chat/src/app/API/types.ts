@@ -24,3 +24,8 @@ export interface LoginPayload {
     isLogined: boolean;
   };
 }
+
+export interface UserLoginData {
+  login: string;
+  password: string;
+}

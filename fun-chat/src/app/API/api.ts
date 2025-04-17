@@ -1,4 +1,5 @@
 import MainPage from '../page/main-page/main-page';
+import { UserLoginData } from './types';
 // import clearBody from '../utitlities/clear-body';
 
 export default class API {
@@ -30,9 +31,19 @@ export default class API {
   //   }
   // }
 
-  // sendRequestToServer(request) {
-  //   this.websocket.send(JSON.stringify(request));
-  // }
+  sendLoginRequestToServer(data: UserLoginData) {
+    const request = {
+      id: 'Log In',
+      type: 'USER_LOGIN',
+      payload: {
+        user: {
+          login: data.login,
+          password: data.password,
+        },
+      },
+    };
+    this.websocket.send(JSON.stringify(request));
+  }
 }
 
 export const api = new API();

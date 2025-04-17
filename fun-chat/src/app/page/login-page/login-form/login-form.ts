@@ -1,3 +1,4 @@
+import { api } from '../../../API/api';
 import ButtonComponent from '../../../shared/button-component/button-component';
 import { buttonToAbout } from '../../../shared/button-to-about/button-to-about';
 import FormComponent from '../../../shared/form-component/form-component';
@@ -25,19 +26,13 @@ export default class LoginForm extends FormComponent {
       buttonToAbout(['authorization-element']),
     ]);
 
-    // this.addListenerToSubmit((event: Event) => {
-    //   event.preventDefault();
-    //   api.sendRequestToServer({
-    //     id: 'Log In',
-    //     type: 'USER_LOGIN',
-    //     payload: {
-    //       user: {
-    //         login: this.formLabels[0].input.getNode().value,
-    //         password: this.formLabels[1].input.getNode().value,
-    //       },
-    //     },
-    //   });
-    // });
+    this.addListenerToSubmit((event: Event) => {
+      event.preventDefault();
+      api.sendLoginRequestToServer({
+        login: this.formLabels[0].input.getNode().value,
+        password: this.formLabels[1].input.getNode().value,
+      });
+    });
     this.addListenerToInputChange();
   }
 
