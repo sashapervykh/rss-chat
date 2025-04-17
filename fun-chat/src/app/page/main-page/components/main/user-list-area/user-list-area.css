@@ -8,4 +8,6 @@
   height: auto;
   max-height: inherit;
   overflow-y: scroll;
+  font-size: 20px;
+  padding-left: 20px;
 }

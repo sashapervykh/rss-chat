@@ -24,6 +24,7 @@ export default tseslint.config(
       'no-unused-expressions': 'error',
       'unicorn/better-regex': 'warn',
       'max-lines-per-function': ['error', 40],
+      'unicorn/no-null': 'off', // the rule is disabled, because some requests to server must include null
     },
   },
   {

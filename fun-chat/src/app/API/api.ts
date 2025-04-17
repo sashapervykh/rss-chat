@@ -2,12 +2,7 @@ import LoginPage from '../page/login-page/login-page';
 import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
 import returnTypeCheckedData from '../utitlities/return-type-checked-data';
-import {
-  ResponseTypes,
-  ServerErrorResponse,
-  ServerLogResponse,
-  UserLoginData,
-} from './types';
+import { ResponseTypes, ServerResponses, UserLoginData } from './types';
 
 export default class API {
   websocket = new WebSocket('ws://localhost:4000');
@@ -28,7 +23,7 @@ export default class API {
     });
   }
 
-  processServerData(data: ServerLogResponse | ServerErrorResponse) {
+  processServerData(data: ServerResponses) {
     switch (data.type) {
       case ResponseTypes.login: {
         clearBody();
@@ -44,10 +39,37 @@ export default class API {
         loginPage.createLoginPage();
         break;
       }
+      case ResponseTypes.activeUsers:
+      case ResponseTypes.inactiveUsers: {
+        if (this.mainPage.userList) {
+          for (const user of data.payload.users) {
+            this.mainPage.userList.addItemToList(user);
+          }
+        } else {
+          console.error('Data about users are not received');
+        }
+        break;
+      }
       default: {
         console.log('Something strange');
       }
     }
+  }
+
+  sendUsersRequestToServer() {
+    const requestForActive = JSON.stringify({
+      id: 'All users',
+      type: 'USER_ACTIVE',
+      payload: null,
+    });
+
+    this.websocket.send(requestForActive);
+    const requestForInactive = JSON.stringify({
+      id: 'All users',
+      type: 'USER_INACTIVE',
+      payload: null,
+    });
+    this.websocket.send(requestForInactive);
   }
 
   sendLogRequestToServer(data: UserLoginData) {

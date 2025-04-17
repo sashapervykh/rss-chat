@@ -1,3 +1,8 @@
+export type ServerResponses =
+  | ServerLogResponse
+  | ServerUsersResponse
+  | ServerErrorResponse;
+
 export interface ServerLogResponse {
   id: string | null;
   type: UserLogTypes;
