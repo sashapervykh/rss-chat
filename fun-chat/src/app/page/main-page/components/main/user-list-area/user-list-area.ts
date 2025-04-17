@@ -27,16 +27,6 @@ export default class UserListArea extends BaseComponent {
     });
 
     const userList = new BaseComponent({ tag: 'ul', styles: ['user-list'] });
-    for (let index = 0; index < 100; index++) {
-      const style = index > 50 ? 'offline' : 'online';
-      userList.addChildren([
-        new BaseComponent({
-          tag: 'li',
-          styles: [style],
-          children: [new BaseComponent({ tag: 'span', text: 'Anonym' })],
-        }),
-      ]);
-    }
 
     this.addChildren([searchForm, userList]);
   }

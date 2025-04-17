@@ -4,6 +4,14 @@ export interface ServerLogResponse {
   payload: LoginPayload;
 }
 
+export interface ServerUsersResponse {
+  id: string;
+  type: ResponseTypes.activeUsers | ResponseTypes.inactiveUsers;
+  payload: {
+    users: User[];
+  };
+}
+
 export interface ServerErrorResponse {
   id: string | null;
   type: ResponseTypes.error;
@@ -16,6 +24,8 @@ export enum ResponseTypes {
   thirdLogin = 'USER_EXTERNAL_LOGIN',
   thirdLogout = 'USER_EXTERNAL_LOGOUT',
   error = 'ERROR',
+  activeUsers = 'USER_ACTIVE',
+  inactiveUsers = 'USER_INACTIVE',
 }
 
 export interface ErrorPayload {
@@ -23,10 +33,12 @@ export interface ErrorPayload {
 }
 
 export interface LoginPayload {
-  user: {
-    login: string;
-    isLogined: boolean;
-  };
+  user: User;
+}
+
+interface User {
+  login: string;
+  isLogined: boolean;
 }
 
 export type UserLogTypes =

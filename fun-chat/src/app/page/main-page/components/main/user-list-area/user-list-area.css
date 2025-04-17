@@ -9,11 +9,3 @@
   max-height: inherit;
   overflow-y: scroll;
 }
-
-.online {
-  color: green;
-}
-
-.offline {
-  color: gainsboro;
-}
