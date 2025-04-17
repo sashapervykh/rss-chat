@@ -1,10 +1,18 @@
-export interface ServerResponse {
+export interface ServerLogResponse {
   id: string | null;
-  type: 'ERROR' | 'USER_LOGIN';
-  payload: PayloadTypes;
+  type:
+    | ResponseTypes.login
+    | ResponseTypes.logout
+    | ResponseTypes.thirdLogin
+    | ResponseTypes.thirdLogout;
+  payload: LoginPayload;
 }
 
-export type PayloadTypes = ErrorPayload | LoginPayload;
+export interface ServerErrorResponse {
+  id: string | null;
+  type: ResponseTypes.error;
+  payload: ErrorPayload;
+}
 
 export enum ResponseTypes {
   login = 'USER_LOGIN',

@@ -1,5 +1,12 @@
 import MainPage from '../page/main-page/main-page';
-import { UserLoginData } from './types';
+import clearBody from '../utitlities/clear-body';
+import returnTypeCheckedData from '../utitlities/return-type-checked-data';
+import {
+  ResponseTypes,
+  ServerErrorResponse,
+  ServerLogResponse,
+  UserLoginData,
+} from './types';
 // import clearBody from '../utitlities/clear-body';
 
 export default class API {
@@ -12,24 +19,25 @@ export default class API {
     });
 
     this.websocket.addEventListener('message', (event) => {
-      console.log(event.data);
+      const response = returnTypeCheckedData(event.data);
+      this.processServerData(response);
     });
   }
 
-  // processServerData(data) {
-  //   switch (data.id) {
-  //     case 'Log In': {
-  //       clearBody();
-  //       history.pushState('main', '', '/main');
-  //       console.log(data.payload.user.login);
-  //       this.mainPage.createMainPage({ userName: data.payload.user.login });
-  //       break;
-  //     }
-  //     default: {
-  //       console.log('Something strange');
-  //     }
-  //   }
-  // }
+  processServerData(data: ServerLogResponse | ServerErrorResponse) {
+    switch (data.type) {
+      case ResponseTypes.login: {
+        clearBody();
+        history.pushState('main', '', '/main');
+        console.log(data.payload.user.login);
+        this.mainPage.createMainPage({ userName: data.payload.user.login });
+        break;
+      }
+      default: {
+        console.log('Something strange');
+      }
+    }
+  }
 
   sendLoginRequestToServer(data: UserLoginData) {
     const request = {
