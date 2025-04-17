@@ -1,9 +1,9 @@
 import ButtonComponent from '../../../shared/button-component/button-component';
 import { buttonToAbout } from '../../../shared/button-to-about/button-to-about';
 import FormComponent from '../../../shared/form-component/form-component';
-import InputLabel from '../components/input-label';
+import InputLabel from './components/input-label';
 
-export default class AuthorizationForm extends FormComponent {
+export default class LoginForm extends FormComponent {
   formLabels = [
     new InputLabel({ type: 'Name' }),
     new InputLabel({ type: 'Password' }),
@@ -17,10 +17,6 @@ export default class AuthorizationForm extends FormComponent {
   constructor() {
     super({
       styles: ['authorization-form'],
-      onSubmitAction: (event: Event) => {
-        event.preventDefault();
-        console.log('Authorization');
-      },
     });
 
     this.addChildren([
@@ -29,21 +25,31 @@ export default class AuthorizationForm extends FormComponent {
       buttonToAbout(['authorization-element']),
     ]);
 
+    // this.addListenerToSubmit((event: Event) => {
+    //   event.preventDefault();
+    //   api.sendRequestToServer({
+    //     id: 'Log In',
+    //     type: 'USER_LOGIN',
+    //     payload: {
+    //       user: {
+    //         login: this.formLabels[0].input.getNode().value,
+    //         password: this.formLabels[1].input.getNode().value,
+    //       },
+    //     },
+    //   });
+    // });
     this.addListenerToInputChange();
   }
 
   public addListenerToInputChange() {
     for (const label of this.formLabels) {
       label.input.getNode().addEventListener('input', (event) => {
-        console.log(11);
         const resultOfCheck = this.formLabels.map((label) =>
           label.input.getNode() === event.target
             ? label.validateInputValue(true)
             : label.validateInputValue(false),
         );
-        console.log(resultOfCheck);
         if (resultOfCheck.every(Boolean)) {
-          console.log(1);
           this.buttonToLogIn.getNode().disabled = false;
         } else {
           this.buttonToLogIn.getNode().disabled = true;

@@ -3,8 +3,8 @@ import HeaderComponent from './components/header/header';
 import ChatComponent from './components/main/chat-component';
 
 export default class MainPage {
-  createMainPage() {
-    const header = new HeaderComponent();
+  createMainPage({ userName }: { userName: string }) {
+    const header = new HeaderComponent({ userName: userName });
     const footer = new FooterComponent();
     const chatComponent = new ChatComponent();
 

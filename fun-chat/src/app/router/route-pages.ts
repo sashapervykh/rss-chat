@@ -1,5 +1,5 @@
 import AboutPage from '../page/about-page/about-page';
-import AutorizationPage from '../page/authorization-page/authorization-page';
+import LoginPage from '../page/login-page/login-page';
 import MainPage from '../page/main-page/main-page';
 
 export function routePages(state: string): void {
@@ -15,11 +15,11 @@ export function routePages(state: string): void {
     }
 
     case 'authorization': {
-      loadAuthorizationPage();
+      loadLoginPage();
       break;
     }
     default: {
-      loadAuthorizationPage();
+      loadLoginPage();
     }
   }
 }
@@ -30,10 +30,10 @@ function loadAboutPage(): void {
   aboutPage.createAboutPage();
 }
 
-function loadAuthorizationPage(): void {
+function loadLoginPage(): void {
   document.body.replaceChildren();
-  const aboutPage = new AutorizationPage();
-  aboutPage.createAuthorizationPage();
+  const loginPage = new LoginPage();
+  loginPage.createLoginPage();
 }
 
 function loadMainPage(): void {

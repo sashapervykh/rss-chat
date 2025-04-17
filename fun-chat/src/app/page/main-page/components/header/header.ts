@@ -4,12 +4,13 @@ import { buttonToAbout } from '../../../../shared/button-to-about/button-to-abou
 import './header-component.css';
 
 export default class HeaderComponent extends BaseComponent {
-  constructor() {
+  constructor({ userName }: { userName: string }) {
     super({ tag: 'header', styles: ['header'] });
-    this.addHeaderChildren();
+
+    this.addHeaderChildren({ userName: userName });
   }
 
-  addHeaderChildren() {
+  addHeaderChildren({ userName }: { userName: string }) {
     const h1 = new BaseComponent({
       tag: 'h1',
       text: 'Fun Chat',
@@ -18,13 +19,16 @@ export default class HeaderComponent extends BaseComponent {
 
     const userField = new BaseComponent({
       tag: 'p',
-      text: 'User: Sasha Pervykh',
+      text: `User: ${userName}`,
       styles: ['header_content'],
     });
 
     const logOutButton = new ButtonComponent({
       text: 'Log Out',
       styles: ['header_button'],
+      onClickAction: () => {
+        console.log(1);
+      },
     });
 
     this.addChildren([

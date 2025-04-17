@@ -1,8 +1,8 @@
-import AutorizationPage from './app/page/authorization-page/authorization-page';
+import LoginPage from './app/page/login-page/login-page';
 import startRouting from './app/router/router';
 
-const authorizationPage = new AutorizationPage();
-authorizationPage.createAuthorizationPage();
+const authorizationPage = new LoginPage();
+authorizationPage.createLoginPage();
 
 history.replaceState('authorization', '', '/authorization');
 startRouting();

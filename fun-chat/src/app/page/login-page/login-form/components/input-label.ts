@@ -1,7 +1,7 @@
-import BaseComponent from '../../../shared/base-component/base-component';
-import InputComponent from '../../../shared/input-component/input-component';
 import { DataForCheck, InputLabelParameters } from './types';
 import './input-label.css';
+import BaseComponent from '../../../../shared/base-component/base-component';
+import InputComponent from '../../../../shared/input-component/input-component';
 
 export default class InputLabel extends BaseComponent<HTMLLabelElement> {
   type: 'Name' | 'Password';
