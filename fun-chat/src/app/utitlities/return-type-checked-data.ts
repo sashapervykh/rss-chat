@@ -7,30 +7,35 @@ import {
 export default function returnTypeCheckedData(
   data: unknown,
 ): ServerLogResponse | ServerErrorResponse {
-  if (typeof data !== 'object' || !data)
+  if (typeof data !== 'string')
+    throw new Error('The received data is not string');
+
+  const parsedData: unknown = JSON.parse(data);
+  console.log(parsedData);
+  if (typeof parsedData !== 'object' || !parsedData)
     throw new Error('The received data is not an object or null');
 
   if (
-    Object.keys(data).length !== 3 ||
-    !('id' in data) ||
-    !('type' in data) ||
-    !('payload' in data)
+    Object.keys(parsedData).length !== 3 ||
+    !('id' in parsedData) ||
+    !('type' in parsedData) ||
+    !('payload' in parsedData)
   ) {
     throw new Error(
       'The properties of received data differs from awaited data.',
     );
   }
 
-  if (!(typeof data.id === 'string') && !(data.id === null)) {
+  if (!(typeof parsedData.id === 'string') && !(parsedData.id === null)) {
     throw new Error('The id of received data differs from awaited data.');
   }
 
-  const id = data.id;
+  const id = parsedData.id;
 
   return checkTypeAndPayload({
     id: id,
-    type: data.type,
-    payload: data.payload,
+    type: parsedData.type,
+    payload: parsedData.payload,
   });
 }
 
@@ -61,26 +66,38 @@ function returnTypeCheckedLoginPayload(payload: unknown) {
   if (typeof payload !== 'object' || !payload)
     throw new Error('The received payload is not an object or null');
 
+  if (Object.keys(payload).length !== 1 || !('user' in payload)) {
+    throw new Error(
+      'The user property of received payload differs from awaited data.',
+    );
+  }
+
+  if (typeof payload.user !== 'object' || !payload.user) {
+    throw new Error(
+      'The user property of received payload differs from awaited data.',
+    );
+  }
+
   if (
-    Object.keys(payload).length !== 3 ||
-    !('login' in payload) ||
-    !('isLogined' in payload)
+    Object.keys(payload.user).length !== 2 ||
+    !('login' in payload.user) ||
+    !('isLogined' in payload.user)
   ) {
     throw new Error(
       'The properties of received payload differs from awaited data.',
     );
   }
 
-  if (typeof payload.login !== 'string')
+  if (typeof payload.user.login !== 'string')
     throw new TypeError(
       'The user property of received payload differs from awaited data.',
     );
-  if (typeof payload.isLogined !== 'boolean')
+  if (typeof payload.user.isLogined !== 'boolean')
     throw new TypeError(
       'The isLogined property of received payload differs from awaited data.',
     );
 
-  return { login: payload.login, isLogined: payload.isLogined };
+  return { login: payload.user.login, isLogined: payload.user.isLogined };
 }
 
 function returnTypeCheckedErrorPayload(payload: unknown) {
