@@ -1,3 +1,4 @@
+import LoginPage from '../page/login-page/login-page';
 import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
 import returnTypeCheckedData from '../utitlities/return-type-checked-data';
@@ -7,11 +8,13 @@ import {
   ServerLogResponse,
   UserLoginData,
 } from './types';
-// import clearBody from '../utitlities/clear-body';
 
 export default class API {
   websocket = new WebSocket('ws://localhost:4000');
   mainPage = new MainPage();
+  currentUser: string | undefined;
+
+  currentPassword: string | undefined;
 
   constructor() {
     this.websocket.addEventListener('error', (event) => {
@@ -20,6 +23,7 @@ export default class API {
 
     this.websocket.addEventListener('message', (event) => {
       const response = returnTypeCheckedData(event.data);
+      console.log(response);
       this.processServerData(response);
     });
   }
@@ -33,16 +37,27 @@ export default class API {
         this.mainPage.createMainPage({ userName: data.payload.user.login });
         break;
       }
+      case ResponseTypes.logout: {
+        clearBody();
+        history.replaceState('login', '', '/login');
+        const loginPage = new LoginPage();
+        loginPage.createLoginPage();
+        break;
+      }
       default: {
         console.log('Something strange');
       }
     }
   }
 
-  sendLoginRequestToServer(data: UserLoginData) {
+  sendLogRequestToServer(data: UserLoginData) {
+    if (!data.login && !data.password)
+      throw new Error('Data about current user is not received');
+    this.currentUser = data.login;
+    this.currentPassword = data.password;
     const request = {
-      id: 'Log In',
-      type: 'USER_LOGIN',
+      id: data.id,
+      type: data.type,
       payload: {
         user: {
           login: data.login,

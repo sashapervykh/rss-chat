@@ -4,5 +4,5 @@ import startRouting from './app/router/router';
 const authorizationPage = new LoginPage();
 authorizationPage.createLoginPage();
 
-history.replaceState('authorization', '', '/authorization');
+history.replaceState('login', '', '/login');
 startRouting();

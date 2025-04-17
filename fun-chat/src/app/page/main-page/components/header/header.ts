@@ -1,3 +1,5 @@
+import { api } from '../../../../API/api';
+import { ResponseTypes } from '../../../../API/types';
 import BaseComponent from '../../../../shared/base-component/base-component';
 import ButtonComponent from '../../../../shared/button-component/button-component';
 import { buttonToAbout } from '../../../../shared/button-to-about/button-to-about';
@@ -27,7 +29,12 @@ export default class HeaderComponent extends BaseComponent {
       text: 'Log Out',
       styles: ['header_button'],
       onClickAction: () => {
-        console.log(1);
+        api.sendLogRequestToServer({
+          id: 'Log Out',
+          type: ResponseTypes.logout,
+          login: api.currentUser,
+          password: api.currentPassword,
+        });
       },
     });
 

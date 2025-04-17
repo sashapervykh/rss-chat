@@ -11,7 +11,7 @@ export default function returnTypeCheckedData(
     throw new Error('The received data is not string');
 
   const parsedData: unknown = JSON.parse(data);
-  console.log(parsedData);
+
   if (typeof parsedData !== 'object' || !parsedData)
     throw new Error('The received data is not an object or null');
 

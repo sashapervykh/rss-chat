@@ -1,4 +1,5 @@
 import { api } from '../../../API/api';
+import { ResponseTypes } from '../../../API/types';
 import ButtonComponent from '../../../shared/button-component/button-component';
 import { buttonToAbout } from '../../../shared/button-to-about/button-to-about';
 import FormComponent from '../../../shared/form-component/form-component';
@@ -28,7 +29,9 @@ export default class LoginForm extends FormComponent {
 
     this.addListenerToSubmit((event: Event) => {
       event.preventDefault();
-      api.sendLoginRequestToServer({
+      api.sendLogRequestToServer({
+        id: 'Log In',
+        type: ResponseTypes.login,
         login: this.formLabels[0].input.getNode().value,
         password: this.formLabels[1].input.getNode().value,
       });

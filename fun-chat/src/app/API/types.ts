@@ -1,10 +1,6 @@
 export interface ServerLogResponse {
   id: string | null;
-  type:
-    | ResponseTypes.login
-    | ResponseTypes.logout
-    | ResponseTypes.thirdLogin
-    | ResponseTypes.thirdLogout;
+  type: UserLogTypes;
   payload: LoginPayload;
 }
 
@@ -33,7 +29,15 @@ export interface LoginPayload {
   };
 }
 
+export type UserLogTypes =
+  | ResponseTypes.login
+  | ResponseTypes.logout
+  | ResponseTypes.thirdLogin
+  | ResponseTypes.thirdLogout;
+
 export interface UserLoginData {
-  login: string;
-  password: string;
+  id: string;
+  type: UserLogTypes;
+  login: string | undefined;
+  password: string | undefined;
 }

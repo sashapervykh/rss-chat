@@ -14,7 +14,7 @@ export function routePages(state: string): void {
       break;
     }
 
-    case 'authorization': {
+    case 'login': {
       loadLoginPage();
       break;
     }
