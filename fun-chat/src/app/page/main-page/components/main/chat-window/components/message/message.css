@@ -1,0 +1,25 @@
+.message {
+  background-color: rgb(221, 215, 215);
+  padding: 10px;
+  margin: 5px;
+  border-radius: 20px;
+  max-width: 60%;
+}
+
+.sender-name {
+  font-weight: bold;
+  margin: 5px 0px 0px 0px;
+}
+
+.message-text {
+  margin: 0px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.message-info {
+  margin: 3px;
+}

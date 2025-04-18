@@ -52,6 +52,9 @@ export default class API {
         break;
       }
       case ResponseTypes.oneMessage: {
+        if (!this.mainPage.chatWindow)
+          throw new Error('Chat window was not found');
+        this.mainPage.chatWindow.addMessageToChat(data);
         break;
       }
       default: {

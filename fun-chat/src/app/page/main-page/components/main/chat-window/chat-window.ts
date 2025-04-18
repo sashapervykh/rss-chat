@@ -1,7 +1,9 @@
+import { ServerMessageResponse } from '../../../../../API/types';
 import BaseComponent from '../../../../../shared/base-component/base-component';
 import './chat-window.css';
 import MessageForm from './components/message-form';
 import MessageTextarea from './components/message-textarea/message-textarea';
+import MessageComponent from './components/message/message';
 
 export default class ChatWindow extends BaseComponent {
   h2: BaseComponent | undefined;
@@ -29,5 +31,11 @@ export default class ChatWindow extends BaseComponent {
     this.messageTextarea.getNode().disabled = false;
     this.h2.setTextContent(login);
     this.login = login;
+  }
+
+  addMessageToChat(messageData: ServerMessageResponse) {
+    if (!this.messageList) throw new Error('Message list was not found');
+    const messageBlock = new MessageComponent(messageData);
+    this.messageList.addChildren([messageBlock]);
   }
 }
