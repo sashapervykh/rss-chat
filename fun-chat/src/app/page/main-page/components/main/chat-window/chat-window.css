@@ -1,5 +1,10 @@
 .chat-window {
   height: inherit;
   display: grid;
-  grid-template-rows: 5% 95% 5%;
+  grid-template-rows: 10% 85% 5%;
+}
+
+.chat_h2 {
+  border-bottom: 2px solid black;
+  margin: 5px;
 }

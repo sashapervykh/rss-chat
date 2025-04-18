@@ -11,7 +11,7 @@ export default class ChatWindow extends BaseComponent {
   }
 
   addChatWindowChildren() {
-    const h2 = new BaseComponent({ tag: 'h2', text: 'UserName' });
+    const h2 = new BaseComponent({ tag: 'h2', styles: ['chat_h2'] });
     const messageList = new BaseComponent({ tag: 'div' });
     const messageForm = new FormComponent({
       styles: ['form'],

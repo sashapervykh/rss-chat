@@ -3,6 +3,7 @@ import LiComponent from '../li-component/li-component';
 import { UserListData } from '../li-component/types';
 
 export default class UlComponent extends BaseComponent {
+  usersList: LiComponent[] = [];
   constructor() {
     super({
       tag: 'ul',
@@ -11,6 +12,8 @@ export default class UlComponent extends BaseComponent {
   }
 
   addItemToList(userData: UserListData) {
-    this.addChildren([new LiComponent(userData)]);
+    const user = new LiComponent(userData);
+    this.usersList.push(user);
+    this.addChildren([user]);
   }
 }

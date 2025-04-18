@@ -3,11 +3,14 @@ import './li-component.css';
 import { UserListData } from './types';
 
 export default class LiComponent extends BaseComponent {
+  login: string;
   constructor(userData: UserListData) {
     super({
       tag: 'li',
       text: userData.login,
       styles: userData.isLogined ? ['online'] : ['offline'],
     });
+
+    this.login = userData.login;
   }
 }
