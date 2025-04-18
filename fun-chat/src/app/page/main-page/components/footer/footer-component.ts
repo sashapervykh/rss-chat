@@ -17,7 +17,7 @@ export default class FooterComponent extends BaseComponent {
     });
     const year = new BaseComponent({
       tag: 'div',
-      text: '2025',
+      text: '2025, created by Sasha Pervykh',
       styles: ['footer_element'],
     });
 
