@@ -14,12 +14,10 @@ export default class UlComponent extends BaseComponent {
 
     this.addListenerToEvent('click', (event) => {
       if (!(event.target instanceof HTMLLIElement)) return;
-      if (!chatWindow.h2)
-        throw new Error('Information about chat header are not received');
       if (!event.target.textContent)
         throw new Error('Impossible text value of chosen element');
       const chosenUserLogin = event.target.textContent;
-      chatWindow.h2.setTextContent(chosenUserLogin);
+      chatWindow.openDialogue(chosenUserLogin);
       api.sendRequestForAllMessages(chosenUserLogin);
     });
   }

@@ -51,6 +51,9 @@ export default class API {
         }
         break;
       }
+      case ResponseTypes.oneMessage: {
+        break;
+      }
       default: {
         console.log('Something strange');
       }
