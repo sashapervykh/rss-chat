@@ -6,6 +6,7 @@ import { UserListData } from '../li-component/types';
 
 export default class UlComponent extends BaseComponent {
   usersList: LiComponent[] = [];
+  filtered = false;
   constructor(chatWindow: ChatWindow) {
     super({
       tag: 'ul',
@@ -31,6 +32,7 @@ export default class UlComponent extends BaseComponent {
   filterUsers(value: string) {
     this.removeChildren();
     if (value === '') {
+      this.filtered = false;
       this.addChildren(this.usersList);
     } else {
       const filterUsers = [];
@@ -39,6 +41,7 @@ export default class UlComponent extends BaseComponent {
           filterUsers.push(user);
         }
       }
+      this.filtered = true;
       this.addChildren(filterUsers);
     }
   }

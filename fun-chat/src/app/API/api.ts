@@ -1,4 +1,5 @@
 import LoginPage from '../page/login-page/login-page';
+import LiComponent from '../page/main-page/components/main/user-list-area/component/li-component/li-component';
 import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
 import returnTypeCheckedData from '../utitlities/return-type-checked-data';
@@ -21,11 +22,15 @@ export default class API {
     this.websocket.addEventListener('message', (event) => {
       const response = returnTypeCheckedData(event.data);
       console.log(response);
-      this.processServerData(response);
+      if (response.id) {
+        this.processResponseToUser(response);
+      } else {
+        this.processRequestFromServer(response);
+      }
     });
   }
 
-  processServerData(data: ServerResponses) {
+  processResponseToUser(data: ServerResponses) {
     switch (data.type) {
       case ResponseTypes.login: {
         clearBody();
@@ -43,10 +48,10 @@ export default class API {
       }
       case ResponseTypes.activeUsers:
       case ResponseTypes.inactiveUsers: {
-        if (this.mainPage.userList) {
+        if (this.mainPage.usersUl) {
           for (const user of data.payload.users) {
             if (user.login === this.currentUser) continue;
-            this.mainPage.userList.addItemToList(user);
+            this.mainPage.usersUl.addItemToList(user);
           }
         } else {
           console.error('Data about users are not received');
@@ -59,6 +64,45 @@ export default class API {
         this.mainPage.chatWindow.addMessageToChat(data);
         break;
       }
+      default: {
+        console.log('Something strange');
+      }
+    }
+  }
+
+  processRequestFromServer(data: ServerResponses) {
+    if (!this.mainPage.usersUl)
+      throw new Error('Data about user list are not received');
+    switch (data.type) {
+      case ResponseTypes.thirdLogin: {
+        for (const user of this.mainPage.usersUl.usersList) {
+          if (user.login === data.payload.user.login) {
+            console.log(user);
+            user.addStyles(['online']);
+            user.removeStyles(['offline']);
+            console.log('match');
+            return;
+          }
+        }
+        const user = new LiComponent(data.payload.user);
+        if (!this.mainPage.usersUl.filtered) {
+          this.mainPage.usersUl.addChildren([user]);
+        }
+        this.mainPage.usersUl.usersList.push(user);
+
+        break;
+      }
+      case ResponseTypes.thirdLogout: {
+        for (const user of this.mainPage.usersUl.usersList) {
+          if (user.login === data.payload.user.login) {
+            user.addStyles(['offline']);
+            user.removeStyles(['online']);
+            return;
+          }
+        }
+        break;
+      }
+
       default: {
         console.log('Something strange');
       }

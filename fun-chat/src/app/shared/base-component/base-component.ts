@@ -25,6 +25,10 @@ export default class BaseComponent {
     });
   }
 
+  public removeStyles(styles: string[]) {
+    this.node.classList.remove(...styles);
+  }
+
   public addStyles(styles: string[]) {
     this.node.classList.add(...styles);
   }

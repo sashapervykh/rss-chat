@@ -23,10 +23,10 @@ export default class UserListArea extends BaseComponent {
     if (!this.mainPage.chatWindow)
       throw new Error('Information about chat window is not received');
 
-    this.mainPage.userList = new UlComponent(this.mainPage.chatWindow);
+    this.mainPage.usersUl = new UlComponent(this.mainPage.chatWindow);
 
-    const searchForm = new SearchInput(this.mainPage.userList);
+    const searchForm = new SearchInput(this.mainPage.usersUl);
 
-    this.addChildren([searchForm, this.mainPage.userList]);
+    this.addChildren([searchForm, this.mainPage.usersUl]);
   }
 }

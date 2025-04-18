@@ -5,7 +5,7 @@ import ChatWindow from './components/main/chat-window/chat-window';
 import UlComponent from './components/main/user-list-area/component/ul-component/ul-component';
 
 export default class MainPage {
-  userList: UlComponent | undefined;
+  usersUl: UlComponent | undefined;
   chatWindow: ChatWindow | undefined;
 
   createMainPage({ userName }: { userName: string }) {
