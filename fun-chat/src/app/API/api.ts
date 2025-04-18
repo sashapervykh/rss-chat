@@ -43,6 +43,7 @@ export default class API {
       case ResponseTypes.inactiveUsers: {
         if (this.mainPage.userList) {
           for (const user of data.payload.users) {
+            if (user.login === this.currentUser) continue;
             this.mainPage.userList.addItemToList(user);
           }
         } else {

@@ -8,7 +8,6 @@ export default class SearchInput extends InputComponent {
 
     this.addListenerToEvent('input', () => {
       const enteredValue = this.getNode().value;
-      console.log(enteredValue);
       userList.filterUsers(enteredValue);
     });
   }
