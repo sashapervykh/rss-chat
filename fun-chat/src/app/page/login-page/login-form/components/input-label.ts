@@ -92,7 +92,7 @@ export default class InputLabel extends BaseComponent {
       value: value,
       criteria: {
         minlength: 4,
-        pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/,
+        pattern: /^(?=.*[A-Z])(?=.*\d).+$/,
       },
     });
   }
