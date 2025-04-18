@@ -1,13 +1,26 @@
+import { api } from '../../../../../../../API/api';
 import BaseComponent from '../../../../../../../shared/base-component/base-component';
+import ChatWindow from '../../../chat-window/chat-window';
 import LiComponent from '../li-component/li-component';
 import { UserListData } from '../li-component/types';
 
 export default class UlComponent extends BaseComponent {
   usersList: LiComponent[] = [];
-  constructor() {
+  constructor(chatWindow: ChatWindow) {
     super({
       tag: 'ul',
       styles: ['user-list'],
+    });
+
+    this.addListenerToEvent('click', (event) => {
+      if (!(event.target instanceof HTMLLIElement)) return;
+      if (!chatWindow.h2)
+        throw new Error('Information about chat header are not received');
+      if (!event.target.textContent)
+        throw new Error('Impossible text value of chosen element');
+      const chosenUserLogin = event.target.textContent;
+      chatWindow.h2.setTextContent(chosenUserLogin);
+      api.sendRequestForAllMessages(chosenUserLogin);
     });
   }
 

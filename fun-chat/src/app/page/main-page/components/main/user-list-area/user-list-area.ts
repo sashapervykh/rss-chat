@@ -20,8 +20,10 @@ export default class UserListArea extends BaseComponent {
 
   addAreaChildren() {
     api.sendUsersRequestToServer();
+    if (!this.mainPage.chatWindow)
+      throw new Error('Information about chat window is not received');
 
-    this.mainPage.userList = new UlComponent();
+    this.mainPage.userList = new UlComponent(this.mainPage.chatWindow);
 
     const searchForm = new SearchInput(this.mainPage.userList);
 

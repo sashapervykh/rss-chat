@@ -6,6 +6,7 @@ import MainPage from '../../main-page';
 
 export default class ChatComponent extends MainComponent {
   mainPage: MainPage;
+
   constructor(mainPage: MainPage) {
     super();
     this.addStyles(['chat-main']);
@@ -14,8 +15,8 @@ export default class ChatComponent extends MainComponent {
   }
 
   addChatComponent() {
+    this.mainPage.chatWindow = new ChatWindow();
     const userListArea = new UserListArea(this.mainPage);
-    const chatWindow = new ChatWindow();
-    this.addChildren([userListArea, chatWindow]);
+    this.addChildren([userListArea, this.mainPage.chatWindow]);
   }
 }

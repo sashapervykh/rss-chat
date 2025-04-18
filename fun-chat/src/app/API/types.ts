@@ -31,6 +31,7 @@ export enum ResponseTypes {
   error = 'ERROR',
   activeUsers = 'USER_ACTIVE',
   inactiveUsers = 'USER_INACTIVE',
+  allUsersMessages = 'MSG_FROM_USER',
 }
 
 export interface ErrorPayload {

@@ -90,6 +90,15 @@ export default class API {
     };
     this.websocket.send(JSON.stringify(request));
   }
+
+  sendRequestForAllMessages(login: string) {
+    const request = {
+      id: login,
+      type: ResponseTypes.allUsersMessages,
+      payload: { users: { login: login } },
+    };
+    this.websocket.send(JSON.stringify(request));
+  }
 }
 
 export const api = new API();
