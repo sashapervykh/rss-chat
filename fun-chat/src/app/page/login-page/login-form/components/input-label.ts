@@ -3,7 +3,7 @@ import './input-label.css';
 import BaseComponent from '../../../../shared/base-component/base-component';
 import InputComponent from '../../../../shared/input-component/input-component';
 
-export default class InputLabel extends BaseComponent<HTMLLabelElement> {
+export default class InputLabel extends BaseComponent {
   type: 'Name' | 'Password';
   notice: BaseComponent | undefined;
   input = new InputComponent({

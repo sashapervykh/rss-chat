@@ -1,8 +1,6 @@
 import BaseComponent from '../../../../../shared/base-component/base-component';
-import ButtonComponent from '../../../../../shared/button-component/button-component';
-import FormComponent from '../../../../../shared/form-component/form-component';
-import InputComponent from '../../../../../shared/input-component/input-component';
 import './chat-window.css';
+import MessageForm from './components/message-form';
 
 export default class ChatWindow extends BaseComponent {
   h2: BaseComponent | undefined;
@@ -16,19 +14,7 @@ export default class ChatWindow extends BaseComponent {
   addChatWindowChildren() {
     this.h2 = new BaseComponent({ tag: 'h2', styles: ['chat_h2'] });
     this.messageList = new BaseComponent({ tag: 'div' });
-    const messageForm = new FormComponent({
-      styles: ['form'],
-      onSubmitAction: () => {
-        console.log(3);
-      },
-      children: [
-        new InputComponent({
-          placeholder: 'Enter your message',
-          styles: ['input'],
-        }),
-        new ButtonComponent({ text: 'Send', styles: ['button'] }),
-      ],
-    });
+    const messageForm = new MessageForm();
     this.addChildren([this.h2, this.messageList, messageForm]);
   }
 }

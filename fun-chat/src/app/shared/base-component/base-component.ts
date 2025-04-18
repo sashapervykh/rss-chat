@@ -1,10 +1,11 @@
-import { BaseComponentParameters, Callback } from './types';
+import { createElement } from '../../utitlities/create-element';
+import { BaseComponentParameters, Callback, Tag } from './types';
 
-export default class BaseComponent<T extends HTMLElement = HTMLElement> {
-  private node: T | HTMLElement;
+export default class BaseComponent {
+  private node: HTMLElementTagNameMap[Tag];
 
   constructor(parameters: BaseComponentParameters) {
-    this.node = document.createElement(parameters.tag);
+    this.node = createElement(parameters.tag);
     if (parameters.styles) this.addStyles(parameters.styles);
     if (parameters.text) this.setTextContent(parameters.text);
     if (parameters.children) this.addChildren(parameters.children);
@@ -31,7 +32,7 @@ export default class BaseComponent<T extends HTMLElement = HTMLElement> {
     return this.node;
   }
 
-  public removeChildren() {
+  removeChildren() {
     this.node.replaceChildren();
   }
 

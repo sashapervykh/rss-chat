@@ -1,7 +1,7 @@
 import BaseComponent from '../base-component/base-component';
 import { ButtonComponentParameters } from './types';
 
-export default class ButtonComponent extends BaseComponent<HTMLButtonElement> {
+export default class ButtonComponent extends BaseComponent {
   constructor(parameters?: ButtonComponentParameters) {
     super({ tag: 'button', styles: parameters?.styles });
     if (parameters?.text) this.setTextContent(parameters.text);

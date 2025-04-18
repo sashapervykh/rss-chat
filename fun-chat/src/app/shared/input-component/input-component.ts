@@ -1,7 +1,7 @@
 import BaseComponent from '../base-component/base-component';
 import { InputComponentParameters } from './types';
 
-export default class InputComponent extends BaseComponent<HTMLInputElement> {
+export default class InputComponent extends BaseComponent {
   constructor(parameters?: InputComponentParameters) {
     super({ tag: 'input' });
     if (parameters?.styles) this.addStyles(parameters.styles);
