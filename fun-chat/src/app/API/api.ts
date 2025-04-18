@@ -91,6 +91,26 @@ export default class API {
     this.websocket.send(JSON.stringify(request));
   }
 
+  sendOutgoingMessageRequest({
+    login,
+    message,
+  }: {
+    login: string;
+    message: string;
+  }) {
+    const request = {
+      id: login,
+      type: 'MSG_SEND',
+      payload: {
+        message: {
+          to: login,
+          text: message,
+        },
+      },
+    };
+    this.websocket.send(JSON.stringify(request));
+  }
+
   sendRequestForAllMessages(login: string) {
     const request = {
       id: login,

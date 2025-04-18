@@ -1,7 +1,8 @@
 export type ServerResponses =
   | ServerLogResponse
   | ServerUsersResponse
-  | ServerErrorResponse;
+  | ServerErrorResponse
+  | ServerMessageResponse;
 
 export interface ServerLogResponse {
   id: string | null;
@@ -23,6 +24,12 @@ export interface ServerErrorResponse {
   payload: ErrorPayload;
 }
 
+export interface ServerMessageResponse {
+  id: string | null;
+  type: ResponseTypes.oneMessage;
+  payload: { message: Message };
+}
+
 export enum ResponseTypes {
   login = 'USER_LOGIN',
   logout = 'USER_LOGOUT',
@@ -32,6 +39,7 @@ export enum ResponseTypes {
   activeUsers = 'USER_ACTIVE',
   inactiveUsers = 'USER_INACTIVE',
   allUsersMessages = 'MSG_FROM_USER',
+  oneMessage = 'MSG_SEND',
 }
 
 export interface ErrorPayload {
@@ -58,4 +66,17 @@ export interface UserLoginData {
   type: UserLogTypes;
   login: string | undefined;
   password: string | undefined;
+}
+
+export interface Message {
+  id: string;
+  from: string;
+  to: string;
+  text: string;
+  datetime: number;
+  status: {
+    isDelivered: boolean;
+    isReaded: boolean;
+    isEdited: boolean;
+  };
 }

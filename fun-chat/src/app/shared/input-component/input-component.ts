@@ -4,6 +4,7 @@ import { InputComponentParameters } from './types';
 export default class InputComponent extends BaseComponent {
   constructor(parameters?: InputComponentParameters) {
     super({ tag: 'input' });
+
     if (parameters?.styles) this.addStyles(parameters.styles);
 
     if (parameters?.placeholder)

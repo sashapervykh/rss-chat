@@ -6,6 +6,7 @@ export default class BaseComponent {
 
   constructor(parameters: BaseComponentParameters) {
     this.node = createElement(parameters.tag);
+
     if (parameters.styles) this.addStyles(parameters.styles);
     if (parameters.text) this.setTextContent(parameters.text);
     if (parameters.children) this.addChildren(parameters.children);

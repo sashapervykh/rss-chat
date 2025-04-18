@@ -52,6 +52,10 @@ function checkTypeAndPayload(data: {
       const payload = returnTypeCheckedUsersPayload(data.payload);
       return { id: data.id, type: data.type, payload: { users: payload } };
     }
+    case ResponseTypes.oneMessage: {
+      const payload = returnTypeCheckedMessagePayload(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
     case ResponseTypes.error: {
       const payload = returnTypeCheckedErrorPayload(data.payload);
       return { id: data.id, type: data.type, payload: payload };
@@ -92,31 +96,6 @@ function returnTypeCheckedLoginPayload(payload: unknown) {
       'The user property of received payload differs from awaited data.',
     );
   }
-
-  // if (typeof payload.user !== 'object' || !payload.user) {
-  //   throw new Error(
-  //     'The user property of received payload differs from awaited data.',
-  //   );
-  // }
-
-  // if (
-  //   Object.keys(payload.user).length !== 2 ||
-  //   !('login' in payload.user) ||
-  //   !('isLogined' in payload.user)
-  // ) {
-  //   throw new Error(
-  //     'The properties of received payload differs from awaited data.',
-  //   );
-  // }
-
-  // if (typeof payload.user.login !== 'string')
-  //   throw new TypeError(
-  //     'The user property of received payload differs from awaited data.',
-  //   );
-  // if (typeof payload.user.isLogined !== 'boolean')
-  //   throw new TypeError(
-  //     'The isLogined property of received payload differs from awaited data.',
-  //   );
 
   return returnLoginAndStatus(payload.user);
 }
@@ -166,4 +145,109 @@ function returnTypeCheckedErrorPayload(payload: unknown) {
     );
 
   return { error: payload.error };
+}
+
+function returnTypeCheckedMessagePayload(payload: unknown) {
+  if (typeof payload !== 'object' || !payload)
+    throw new Error('The received payload is not an object or null');
+
+  if (Object.keys(payload).length !== 1 || !('message' in payload)) {
+    throw new Error(
+      'The user property of received payload differs from awaited data.',
+    );
+  }
+
+  const message = returnTypeCheckedMessage(payload.message);
+
+  return { message: message };
+}
+
+function returnTypeCheckedMessage(data: unknown) {
+  const message = returnObject(data);
+
+  if (
+    Object.keys(message).length !== 6 ||
+    !(
+      'id' in message &&
+      'from' in message &&
+      'to' in message &&
+      'text' in message &&
+      'datetime' in message &&
+      'status' in message
+    )
+  ) {
+    throw new Error(
+      'The user property of received payload differs from awaited data.',
+    );
+  }
+
+  const id = returnString(message.id, 'id');
+  const from = returnString(message.from, 'from');
+  const to = returnString(message.to, 'to');
+  const text = returnString(message.text, 'text');
+  const datetime = returnNumber(message.datetime, 'datetime');
+
+  const status = returnTypeCheckedStatus(message.status);
+
+  return {
+    id: id,
+    from: from,
+    to: to,
+    text: text,
+    datetime: datetime,
+    status: status,
+  };
+}
+
+function returnTypeCheckedStatus(status: unknown) {
+  if (typeof status !== 'object' || !status) {
+    throw new TypeError('The status property of message has the wrong type');
+  }
+
+  if (
+    Object.keys(status).length !== 3 ||
+    !('isDelivered' in status && 'isReaded' in status && 'isEdited' in status)
+  ) {
+    throw new Error(
+      'The status property of received payload differs from awaited data.',
+    );
+  }
+
+  if (typeof status.isDelivered !== 'boolean') {
+    throw new TypeError(
+      'The isDelivered property of message has the wrong type',
+    );
+  }
+  if (typeof status.isReaded !== 'boolean') {
+    throw new TypeError('The isReaded property of message has the wrong type');
+  }
+  if (typeof status.isEdited !== 'boolean') {
+    throw new TypeError('The isEdited property of message has the wrong type');
+  }
+
+  return {
+    isDelivered: status.isDelivered,
+    isEdited: status.isEdited,
+    isReaded: status.isReaded,
+  };
+}
+
+function returnObject(data: unknown) {
+  if (typeof data !== 'object' || !data)
+    throw new Error('The received payload is not an object or null');
+  return data;
+}
+
+function returnString(data: unknown, key: string) {
+  if (typeof data !== 'string') {
+    throw new TypeError(`The ${key} property of message has the wrong type`);
+  }
+  return data;
+}
+
+function returnNumber(data: unknown, key: string) {
+  if (typeof data !== 'number') {
+    throw new TypeError(`The ${key} property of message has the wrong type`);
+  }
+  return data;
 }
