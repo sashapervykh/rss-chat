@@ -16,4 +16,19 @@ export default class UlComponent extends BaseComponent {
     this.usersList.push(user);
     this.addChildren([user]);
   }
+
+  filterUsers(value: string) {
+    this.removeChildren();
+    if (value === '') {
+      this.addChildren(this.usersList);
+    } else {
+      const filterUsers = [];
+      for (const user of this.usersList) {
+        if (user.login.startsWith(value)) {
+          filterUsers.push(user);
+        }
+      }
+      this.addChildren(filterUsers);
+    }
+  }
 }

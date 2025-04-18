@@ -3,7 +3,8 @@ import { InputComponentParameters } from './types';
 
 export default class InputComponent extends BaseComponent<HTMLInputElement> {
   constructor(parameters?: InputComponentParameters) {
-    super({ tag: 'input', styles: parameters?.styles });
+    super({ tag: 'input' });
+    if (parameters?.styles) this.addStyles(parameters.styles);
 
     if (parameters?.placeholder)
       this.setAttribute('placeholder', parameters.placeholder);

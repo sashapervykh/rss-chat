@@ -31,6 +31,10 @@ export default class BaseComponent<T extends HTMLElement = HTMLElement> {
     return this.node;
   }
 
+  public removeChildren() {
+    this.node.replaceChildren();
+  }
+
   public removeThisNode() {
     this.node.remove();
   }
