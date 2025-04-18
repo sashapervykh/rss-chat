@@ -1,5 +1,4 @@
 import LoginPage from '../page/login-page/login-page';
-import LiComponent from '../page/main-page/components/main/user-list-area/component/li-component/li-component';
 import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
 import returnTypeCheckedData from '../utitlities/return-type-checked-data';
@@ -75,31 +74,15 @@ export default class API {
       throw new Error('Data about user list are not received');
     switch (data.type) {
       case ResponseTypes.thirdLogin: {
-        for (const user of this.mainPage.usersUl.usersList) {
-          if (user.login === data.payload.user.login) {
-            console.log(user);
-            user.addStyles(['online']);
-            user.removeStyles(['offline']);
-            console.log('match');
-            return;
-          }
-        }
-        const user = new LiComponent(data.payload.user);
-        if (!this.mainPage.usersUl.filtered) {
-          this.mainPage.usersUl.addChildren([user]);
-        }
-        this.mainPage.usersUl.usersList.push(user);
-
+        this.mainPage.usersUl.updateUserListForThirdPartyLogIn(
+          data.payload.user,
+        );
         break;
       }
       case ResponseTypes.thirdLogout: {
-        for (const user of this.mainPage.usersUl.usersList) {
-          if (user.login === data.payload.user.login) {
-            user.addStyles(['offline']);
-            user.removeStyles(['online']);
-            return;
-          }
-        }
+        this.mainPage.usersUl.updateUserListForThirdPartyLogOut(
+          data.payload.user,
+        );
         break;
       }
 

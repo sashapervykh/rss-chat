@@ -45,4 +45,29 @@ export default class UlComponent extends BaseComponent {
       this.addChildren(filterUsers);
     }
   }
+
+  updateUserListForThirdPartyLogIn(userData: UserListData) {
+    for (const user of this.usersList) {
+      if (user.login === userData.login) {
+        user.addStyles(['online']);
+        user.removeStyles(['offline']);
+        return;
+      }
+    }
+    const user = new LiComponent(userData);
+    if (!this.filtered) {
+      this.addChildren([user]);
+    }
+    this.usersList.push(user);
+  }
+
+  updateUserListForThirdPartyLogOut(userData: UserListData) {
+    for (const user of this.usersList) {
+      if (user.login === userData.login) {
+        user.addStyles(['offline']);
+        user.removeStyles(['online']);
+        return;
+      }
+    }
+  }
 }
