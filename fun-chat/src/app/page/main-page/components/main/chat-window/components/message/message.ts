@@ -20,9 +20,15 @@ export default class MessageComponent extends BaseComponent {
       text: messageData.payload.message.text,
       styles: ['message-text'],
     });
+
+    const messageInfoText = messageData.id
+      ? `${messageData.payload.message.status.isEdited ? 'Edited' : 'Not edited'}//${messageData.payload.message.status.isDelivered ? 'Delivered' : 'Not delivered'}//${messageData.payload.message.status.isReaded ? 'Read' : 'Not read'}`
+      : messageData.payload.message.status.isEdited
+        ? 'Edited'
+        : 'Not edited';
     const messageInfo = new BaseComponent({
       tag: 'p',
-      text: `${messageData.payload.message.status.isEdited ? 'Edited' : 'Original'}//${messageData.payload.message.status.isDelivered ? 'Delivered' : 'Not delivered'}//${messageData.payload.message.status.isReaded ? 'Read' : 'Not read'}`,
+      text: messageInfoText,
       styles: ['message-info'],
     });
     const messageButtons = new BaseComponent({
@@ -37,6 +43,7 @@ export default class MessageComponent extends BaseComponent {
       this.addChildren([senderName, messageText, messageInfo]);
     } else {
       this.addChildren([senderName, messageText, messageInfo, messageButtons]);
+      this.addStyles(['outgoing-message']);
     }
   }
 }
