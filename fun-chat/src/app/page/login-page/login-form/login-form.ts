@@ -35,7 +35,13 @@ export default class LoginForm extends FormComponent {
         login: this.formLabels[0].input.getNode().value,
         password: this.formLabels[1].input.getNode().value,
       });
+      sessionStorage.setItem('login', this.formLabels[0].input.getNode().value);
+      sessionStorage.setItem(
+        'password',
+        this.formLabels[1].input.getNode().value,
+      );
     });
+
     this.addListenerToInputChange();
   }
 

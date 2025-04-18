@@ -7,9 +7,11 @@ import { ResponseTypes, ServerResponses, UserLoginData } from './types';
 export default class API {
   websocket = new WebSocket('ws://localhost:4000');
   mainPage = new MainPage();
-  currentUser: string | undefined;
+  currentUser: string | undefined =
+    sessionStorage.getItem('login') ?? undefined;
 
-  currentPassword: string | undefined;
+  currentPassword: string | undefined =
+    sessionStorage.getItem('password') ?? undefined;
 
   constructor() {
     this.websocket.addEventListener('error', (event) => {
@@ -27,9 +29,8 @@ export default class API {
     switch (data.type) {
       case ResponseTypes.login: {
         clearBody();
-        history.pushState('main', '', '/main');
+        history.replaceState('main', '', '/main');
         this.mainPage.createMainPage({ userName: data.payload.user.login });
-        sessionStorage.setItem('login', data.payload.user.login);
         break;
       }
       case ResponseTypes.logout: {
@@ -37,7 +38,7 @@ export default class API {
         history.replaceState('login', '', '/login');
         const loginPage = new LoginPage();
         loginPage.createLoginPage();
-        sessionStorage.removeItem('login', data.payload.user.login);
+        sessionStorage.removeItem('login');
         break;
       }
       case ResponseTypes.activeUsers:
