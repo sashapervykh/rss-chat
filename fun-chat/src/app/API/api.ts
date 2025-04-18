@@ -28,8 +28,8 @@ export default class API {
       case ResponseTypes.login: {
         clearBody();
         history.pushState('main', '', '/main');
-        console.log(data.payload.user.login);
         this.mainPage.createMainPage({ userName: data.payload.user.login });
+        sessionStorage.setItem('login', data.payload.user.login);
         break;
       }
       case ResponseTypes.logout: {
@@ -37,6 +37,7 @@ export default class API {
         history.replaceState('login', '', '/login');
         const loginPage = new LoginPage();
         loginPage.createLoginPage();
+        sessionStorage.removeItem('login', data.payload.user.login);
         break;
       }
       case ResponseTypes.activeUsers:

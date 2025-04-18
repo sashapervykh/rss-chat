@@ -38,8 +38,14 @@ function loadLoginPage(): void {
 
 function loadMainPage(): void {
   document.body.replaceChildren();
-  const mainPage = new MainPage();
-  mainPage.createMainPage();
+  const storedLogin = sessionStorage.getItem('login');
+  if (storedLogin) {
+    const mainPage = new MainPage();
+    mainPage.createMainPage({ userName: storedLogin });
+  } else {
+    const loginPage = new LoginPage();
+    loginPage.createLoginPage();
+  }
 }
 
 // function loadErrorPage(): void {
