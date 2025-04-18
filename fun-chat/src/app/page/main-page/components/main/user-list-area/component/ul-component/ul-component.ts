@@ -7,18 +7,23 @@ import { UserListData } from '../li-component/types';
 export default class UlComponent extends BaseComponent {
   usersList: LiComponent[] = [];
   filtered = false;
+  chatWindow: ChatWindow;
   constructor(chatWindow: ChatWindow) {
     super({
       tag: 'ul',
       styles: ['user-list'],
     });
+    this.chatWindow = chatWindow;
 
     this.addListenerToEvent('click', (event) => {
       if (!(event.target instanceof HTMLLIElement)) return;
       if (!event.target.textContent)
         throw new Error('Impossible text value of chosen element');
       const chosenUserLogin = event.target.textContent;
-      chatWindow.openDialogue(chosenUserLogin);
+      const style = event.target.classList.contains('online')
+        ? 'online'
+        : 'offline';
+      chatWindow.openDialogue(chosenUserLogin, style);
       api.sendRequestForAllMessages(chosenUserLogin);
     });
   }
@@ -51,6 +56,10 @@ export default class UlComponent extends BaseComponent {
       if (user.login === userData.login) {
         user.addStyles(['online']);
         user.removeStyles(['offline']);
+        if (this.chatWindow.h2?.getNode().textContent === userData.login) {
+          this.chatWindow.h2.addStyles(['online']);
+          this.chatWindow.h2.removeStyles(['offline']);
+        }
         return;
       }
     }
@@ -66,6 +75,10 @@ export default class UlComponent extends BaseComponent {
       if (user.login === userData.login) {
         user.addStyles(['offline']);
         user.removeStyles(['online']);
+        if (this.chatWindow.h2?.getNode().textContent === userData.login) {
+          this.chatWindow.h2.addStyles(['offline']);
+          this.chatWindow.h2.removeStyles(['online']);
+        }
         return;
       }
     }

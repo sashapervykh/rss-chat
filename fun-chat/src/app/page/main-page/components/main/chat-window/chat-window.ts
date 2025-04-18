@@ -23,7 +23,7 @@ export default class ChatWindow extends BaseComponent {
     this.addChildren([this.h2, this.messageList, messageForm]);
   }
 
-  openDialogue(login: string) {
+  openDialogue(login: string, style: 'online' | 'offline') {
     if (!this.h2)
       throw new Error('Information about chat header is not received');
     if (!this.messageTextarea)
@@ -31,6 +31,8 @@ export default class ChatWindow extends BaseComponent {
     this.messageTextarea.getNode().disabled = false;
     this.h2.setTextContent(login);
     this.login = login;
+    this.h2.addStyles([style]);
+    this.h2.removeStyles([style === 'online' ? 'offline' : 'online']);
   }
 
   addMessageToChat(messageData: ServerMessageResponse) {
