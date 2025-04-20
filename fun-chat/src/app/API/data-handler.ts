@@ -17,8 +17,11 @@ class DataHandler {
 
   currentPassword: string | undefined =
     sessionStorage.getItem('password') ?? undefined;
+  isOpeningDialogue = false;
+  statusOfChosenUser: 'online' | 'offline' = 'offline';
 
   processResponseToUser(data: ServerResponses) {
+    console.log(data);
     switch (data.type) {
       case ResponseTypes.login: {
         this.doWhenUserLogIn(data);
@@ -35,6 +38,9 @@ class DataHandler {
       }
       case ResponseTypes.messageHistory: {
         this.showAmountOfUnreadLetters(data);
+        if (this.isOpeningDialogue) {
+          this.showMessageHistory(data);
+        }
         break;
       }
       case ResponseTypes.oneMessage: {
@@ -48,6 +54,7 @@ class DataHandler {
   }
 
   processRequestFromServer(data: ServerResponses) {
+    console.log(data);
     if (!this.mainPage.usersUl)
       throw new Error('Data about user list are not received');
     switch (data.type) {
@@ -97,7 +104,7 @@ class DataHandler {
 
   private drawSendedMessage(data: ServerMessageResponse) {
     if (!this.mainPage.chatWindow) throw new Error('Chat window was not found');
-    this.mainPage.chatWindow.addMessageToChat(data);
+    this.mainPage.chatWindow.addMessageToChat(data.payload.message);
   }
 
   private showAmountOfUnreadLetters(data: MessageHistoryResponse) {
@@ -110,6 +117,17 @@ class DataHandler {
       (message) => message.from === data.id && !message.status.isReaded,
     );
     element?.setTextContent(`${data.id} (${unreadMessages.length.toString()})`);
+  }
+
+  private showMessageHistory(data: MessageHistoryResponse) {
+    if (!this.mainPage.usersUl)
+      throw new Error('There is no data about users list');
+    if (!this.mainPage.chatWindow)
+      throw new Error('There is no data about chat window');
+    if (!this.mainPage.chatWindow.messageList)
+      throw new Error('There is no data about message list');
+    this.mainPage.chatWindow.messageList.removeChildren();
+    this.mainPage.chatWindow.openDialogue(data, this.statusOfChosenUser);
   }
 }
 

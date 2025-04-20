@@ -1,4 +1,4 @@
-import { ServerMessageResponse } from '../../../../../API/types';
+import { Message, MessageHistoryResponse } from '../../../../../API/types';
 import BaseComponent from '../../../../../shared/base-component/base-component';
 import './chat-window.css';
 import MessageForm from './components/message-form';
@@ -23,19 +23,22 @@ export default class ChatWindow extends BaseComponent {
     this.addChildren([this.h2, this.messageList, messageForm]);
   }
 
-  openDialogue(login: string, style: 'online' | 'offline') {
+  openDialogue(data: MessageHistoryResponse, style: 'online' | 'offline') {
     if (!this.h2)
       throw new Error('Information about chat header is not received');
     if (!this.messageTextarea)
       throw new Error('Information about message textarea is not received');
     this.messageTextarea.getNode().disabled = false;
-    this.h2.setTextContent(login);
-    this.login = login;
+    this.h2.setTextContent(data.id);
+    this.login = data.id;
     this.h2.addStyles([style]);
     this.h2.removeStyles([style === 'online' ? 'offline' : 'online']);
+    for (const message of data.payload.messages) {
+      this.addMessageToChat(message);
+    }
   }
 
-  addMessageToChat(messageData: ServerMessageResponse) {
+  addMessageToChat(messageData: Message) {
     if (!this.messageList) throw new Error('Message list was not found');
     const messageBlock = new MessageComponent(messageData);
     this.messageList.addChildren([messageBlock]);

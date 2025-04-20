@@ -1,4 +1,5 @@
 import { api } from '../../../../../../../API/api';
+import { dataHandler } from '../../../../../../../API/data-handler';
 import BaseComponent from '../../../../../../../shared/base-component/base-component';
 import ChatWindow from '../../../chat-window/chat-window';
 import LiComponent from '../li-component/li-component';
@@ -26,8 +27,10 @@ export default class UlComponent extends BaseComponent {
       const style = event.target.classList.contains('online')
         ? 'online'
         : 'offline';
-      chatWindow.openDialogue(chosenUserLogin, style);
-      api.sendRequestForAllMessages(chosenUserLogin);
+
+      dataHandler.isOpeningDialogue = true;
+      dataHandler.statusOfChosenUser = style;
+      api.sendRequestForMessageHistory(chosenUserLogin);
     });
   }
 

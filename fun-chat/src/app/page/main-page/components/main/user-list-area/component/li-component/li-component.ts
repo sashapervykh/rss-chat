@@ -14,6 +14,6 @@ export default class LiComponent extends BaseComponent {
     });
     this.iSshown = true;
     this.login = userData.login;
-    api.sendRequestForMessagesFromUser(this.login);
+    api.sendRequestForMessageHistory(this.login);
   }
 }

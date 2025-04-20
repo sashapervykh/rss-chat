@@ -1,29 +1,30 @@
-import { ServerMessageResponse } from '../../../../../../../API/types';
+import { dataHandler } from '../../../../../../../API/data-handler';
+import { Message } from '../../../../../../../API/types';
 import BaseComponent from '../../../../../../../shared/base-component/base-component';
 import ButtonComponent from '../../../../../../../shared/button-component/button-component';
 import './message.css';
 
 export default class MessageComponent extends BaseComponent {
-  constructor(messageData: ServerMessageResponse) {
+  constructor(messageData: Message) {
     super({ tag: 'div', styles: ['message'] });
     this.showMessage(messageData);
   }
 
-  showMessage(messageData: ServerMessageResponse) {
+  showMessage(messageData: Message) {
     const senderName = new BaseComponent({
       tag: 'p',
-      text: `${new Date(messageData.payload.message.datetime).toLocaleDateString()}, ${messageData.payload.message.from}`,
+      text: `${new Date(messageData.datetime).toLocaleDateString()}, ${messageData.from}`,
       styles: ['sender-name'],
     });
     const messageText = new BaseComponent({
       tag: 'p',
-      text: messageData.payload.message.text,
+      text: messageData.text,
       styles: ['message-text'],
     });
 
     const messageInfoText = messageData.id
-      ? `${messageData.payload.message.status.isEdited ? 'Edited' : 'Not edited'}//${messageData.payload.message.status.isDelivered ? 'Delivered' : 'Not delivered'}//${messageData.payload.message.status.isReaded ? 'Read' : 'Not read'}`
-      : messageData.payload.message.status.isEdited
+      ? `${messageData.status.isEdited ? 'Edited' : 'Not edited'}//${messageData.status.isDelivered ? 'Delivered' : 'Not delivered'}//${messageData.status.isReaded ? 'Read' : 'Not read'}`
+      : messageData.status.isEdited
         ? 'Edited'
         : 'Not edited';
     const messageInfo = new BaseComponent({
@@ -39,11 +40,11 @@ export default class MessageComponent extends BaseComponent {
         new ButtonComponent({ text: 'Delete', styles: ['message-button'] }),
       ],
     });
-    if (messageData.id === null) {
-      this.addChildren([senderName, messageText, messageInfo]);
-    } else {
+    if (dataHandler.currentUser === messageData.from) {
       this.addChildren([senderName, messageText, messageInfo, messageButtons]);
       this.addStyles(['outgoing-message']);
+    } else {
+      this.addChildren([senderName, messageText, messageInfo]);
     }
   }
 }

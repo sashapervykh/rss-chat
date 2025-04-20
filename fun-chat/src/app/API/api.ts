@@ -74,26 +74,13 @@ class API {
     this.websocket.send(JSON.stringify(request));
   }
 
-  sendRequestForMessagesFromUser(login: string) {
-    const request = {
-      id: login,
-      type: 'MSG_FROM_USER',
-      payload: {
-        user: {
-          login: login,
-        },
-      },
-    };
-
-    this.websocket.send(JSON.stringify(request));
-  }
-
-  sendRequestForAllMessages(login: string) {
+  sendRequestForMessageHistory(login: string) {
     const request = {
       id: login,
       type: ResponseTypes.messageHistory,
-      payload: { users: { login: login } },
+      payload: { user: { login: login } },
     };
+    console.log(request);
     this.websocket.send(JSON.stringify(request));
   }
 }
