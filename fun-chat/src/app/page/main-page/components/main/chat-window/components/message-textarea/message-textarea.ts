@@ -5,6 +5,7 @@ export default class MessageTextarea extends BaseComponent {
     super({ tag: 'textarea', styles: ['message-textarea'] });
 
     this.getNode().setAttribute('rows', '2');
+    this.getNode().disabled = true;
   }
 
   getNode() {

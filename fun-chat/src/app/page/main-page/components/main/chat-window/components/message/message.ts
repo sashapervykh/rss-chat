@@ -13,7 +13,7 @@ export default class MessageComponent extends BaseComponent {
   showMessage(messageData: Message) {
     const senderName = new BaseComponent({
       tag: 'p',
-      text: `${new Date(messageData.datetime).toLocaleDateString()}, ${messageData.from}`,
+      text: `${new Date(messageData.datetime).toLocaleDateString()}, ${new Date(messageData.datetime).toLocaleTimeString()}, ${messageData.from}`,
       styles: ['sender-name'],
     });
     const messageText = new BaseComponent({
