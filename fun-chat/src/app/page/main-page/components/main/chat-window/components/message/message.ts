@@ -22,11 +22,12 @@ export default class MessageComponent extends BaseComponent {
       styles: ['message-text'],
     });
 
-    const messageInfoText = messageData.id
-      ? `${messageData.status.isEdited ? 'Edited' : 'Not edited'}//${messageData.status.isDelivered ? 'Delivered' : 'Not delivered'}//${messageData.status.isReaded ? 'Read' : 'Not read'}`
-      : messageData.status.isEdited
-        ? 'Edited'
-        : 'Not edited';
+    const messageInfoText =
+      messageData.from === dataHandler.currentUser
+        ? `${messageData.status.isEdited ? 'Edited' : 'Not edited'}//${messageData.status.isDelivered ? 'Delivered' : 'Not delivered'}//${messageData.status.isReaded ? 'Read' : 'Not read'}`
+        : messageData.status.isEdited
+          ? 'Edited'
+          : 'Not edited';
     const messageInfo = new BaseComponent({
       tag: 'p',
       text: messageInfoText,

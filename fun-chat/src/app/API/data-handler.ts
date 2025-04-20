@@ -55,19 +55,28 @@ class DataHandler {
 
   processRequestFromServer(data: ServerResponses) {
     console.log(data);
-    if (!this.mainPage.usersUl)
-      throw new Error('Data about user list are not received');
+
     switch (data.type) {
       case ResponseTypes.thirdLogin: {
+        if (!this.mainPage.usersUl)
+          throw new Error('Data about user list are not received');
         this.mainPage.usersUl.updateUserListForThirdPartyLogIn(
           data.payload.user,
         );
         break;
       }
       case ResponseTypes.thirdLogout: {
+        if (!this.mainPage.usersUl)
+          throw new Error('Data about user list are not received');
         this.mainPage.usersUl.updateUserListForThirdPartyLogOut(
           data.payload.user,
         );
+        break;
+      }
+      case ResponseTypes.oneMessage: {
+        if (!this.mainPage.chatWindow)
+          throw new Error('Data about chat window are not received');
+        this.mainPage.chatWindow.processIncomingLetter(data.payload.message);
         break;
       }
 

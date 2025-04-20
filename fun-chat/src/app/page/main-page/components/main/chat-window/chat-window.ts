@@ -43,4 +43,10 @@ export default class ChatWindow extends BaseComponent {
     const messageBlock = new MessageComponent(messageData);
     this.messageList.addChildren([messageBlock]);
   }
+
+  processIncomingLetter(messageData: Message) {
+    if (this.login === messageData.from) {
+      this.addMessageToChat(messageData);
+    }
+  }
 }
