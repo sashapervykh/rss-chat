@@ -1,4 +1,4 @@
-import BaseComponent from '../../../../../../../shared/base-component/base-component';
+import BaseComponent from '../../../../../../../../shared/base-component/base-component';
 
 export default class MessageTextarea extends BaseComponent {
   constructor() {

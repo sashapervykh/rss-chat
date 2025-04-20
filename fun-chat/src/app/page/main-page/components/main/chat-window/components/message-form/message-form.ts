@@ -1,7 +1,7 @@
-import { api } from '../../../../../../API/api';
-import ButtonComponent from '../../../../../../shared/button-component/button-component';
-import FormComponent from '../../../../../../shared/form-component/form-component';
-import ChatWindow from '../chat-window';
+import { api } from '../../../../../../../API/api';
+import ButtonComponent from '../../../../../../../shared/button-component/button-component';
+import FormComponent from '../../../../../../../shared/form-component/form-component';
+import ChatWindow from '../../chat-window';
 import './message-form.css';
 import MessageTextarea from './message-textarea/message-textarea';
 
@@ -31,6 +31,9 @@ export default class MessageForm extends FormComponent {
         buttonToSend.getNode().disabled = true;
       } else {
         buttonToSend.getNode().disabled = false;
+      }
+      if (chatWindow.separateLine) {
+        chatWindow.separateLine.removeThisNode();
       }
     });
 

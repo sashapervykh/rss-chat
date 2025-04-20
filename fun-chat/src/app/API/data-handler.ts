@@ -10,7 +10,7 @@ import {
   ServerUsersResponse,
 } from './types';
 
-class DataHandler {
+export default class DataHandler {
   mainPage = new MainPage();
   currentUser: string | undefined =
     sessionStorage.getItem('login') ?? undefined;
@@ -86,6 +86,12 @@ class DataHandler {
     }
   }
 
+  resetDataHandler() {
+    this.mainPage = new MainPage();
+    this.isOpeningDialogue = false;
+    this.statusOfChosenUser = 'offline';
+  }
+
   private doWhenUserLogIn(data: ServerLogResponse) {
     clearBody();
     history.replaceState('main', '', '/main');
@@ -133,8 +139,7 @@ class DataHandler {
       throw new Error('There is no data about users list');
     if (!this.mainPage.chatWindow)
       throw new Error('There is no data about chat window');
-    if (!this.mainPage.chatWindow.messageList)
-      throw new Error('There is no data about message list');
+
     this.mainPage.chatWindow.messageList.removeChildren();
     this.mainPage.chatWindow.openDialogue(data, this.statusOfChosenUser);
   }

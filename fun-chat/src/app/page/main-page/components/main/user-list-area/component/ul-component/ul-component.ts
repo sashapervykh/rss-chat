@@ -62,7 +62,7 @@ export default class UlComponent extends BaseComponent {
       if (user.login === userData.login) {
         user.addStyles(['online']);
         user.removeStyles(['offline']);
-        if (this.chatWindow.h2?.getNode().textContent === userData.login) {
+        if (this.chatWindow.h2.getNode().textContent === userData.login) {
           this.chatWindow.h2.addStyles(['online']);
           this.chatWindow.h2.removeStyles(['offline']);
         }
@@ -81,7 +81,7 @@ export default class UlComponent extends BaseComponent {
       if (user.login === userData.login) {
         user.addStyles(['offline']);
         user.removeStyles(['online']);
-        if (this.chatWindow.h2?.getNode().textContent === userData.login) {
+        if (this.chatWindow.h2.getNode().textContent === userData.login) {
           this.chatWindow.h2.addStyles(['offline']);
           this.chatWindow.h2.removeStyles(['online']);
         }

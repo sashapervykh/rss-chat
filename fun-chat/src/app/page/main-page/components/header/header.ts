@@ -36,6 +36,7 @@ export default class HeaderComponent extends BaseComponent {
           login: dataHandler.currentUser,
           password: dataHandler.currentPassword,
         });
+        dataHandler.resetDataHandler();
       },
     });
 
