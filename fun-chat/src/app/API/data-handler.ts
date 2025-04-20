@@ -1,7 +1,13 @@
 import LoginPage from '../page/login-page/login-page';
 import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
-import { ResponseTypes, ServerResponses } from './types';
+import {
+  ResponseTypes,
+  ServerLogResponse,
+  ServerMessageResponse,
+  ServerResponses,
+  ServerUsersResponse,
+} from './types';
 
 class DataHandler {
   mainPage = new MainPage();
@@ -14,35 +20,20 @@ class DataHandler {
   processResponseToUser(data: ServerResponses) {
     switch (data.type) {
       case ResponseTypes.login: {
-        clearBody();
-        history.replaceState('main', '', '/main');
-        this.mainPage.createMainPage({ userName: data.payload.user.login });
+        this.doWhenUserLogIn(data);
         break;
       }
       case ResponseTypes.logout: {
-        clearBody();
-        history.replaceState('login', '', '/login');
-        const loginPage = new LoginPage();
-        loginPage.createLoginPage();
-        sessionStorage.removeItem('login');
+        this.doWhenUserLogOut();
         break;
       }
       case ResponseTypes.activeUsers:
       case ResponseTypes.inactiveUsers: {
-        if (this.mainPage.usersUl) {
-          for (const user of data.payload.users) {
-            if (user.login === this.currentUser) continue;
-            this.mainPage.usersUl.addItemToList(user);
-          }
-        } else {
-          console.error('Data about users are not received');
-        }
+        this.drawUsersList(data);
         break;
       }
       case ResponseTypes.oneMessage: {
-        if (!this.mainPage.chatWindow)
-          throw new Error('Chat window was not found');
-        this.mainPage.chatWindow.addMessageToChat(data);
+        this.drawSendedMessage(data);
         break;
       }
       default: {
@@ -72,6 +63,36 @@ class DataHandler {
         console.log('Something strange');
       }
     }
+  }
+
+  private doWhenUserLogIn(data: ServerLogResponse) {
+    clearBody();
+    history.replaceState('main', '', '/main');
+    this.mainPage.createMainPage({ userName: data.payload.user.login });
+  }
+
+  private doWhenUserLogOut() {
+    clearBody();
+    history.replaceState('login', '', '/login');
+    const loginPage = new LoginPage();
+    loginPage.createLoginPage();
+    sessionStorage.removeItem('login');
+  }
+
+  private drawUsersList(data: ServerUsersResponse) {
+    if (this.mainPage.usersUl) {
+      for (const user of data.payload.users) {
+        if (user.login === this.currentUser) continue;
+        this.mainPage.usersUl.addItemToList(user);
+      }
+    } else {
+      console.error('Data about users are not received');
+    }
+  }
+
+  private drawSendedMessage(data: ServerMessageResponse) {
+    if (!this.mainPage.chatWindow) throw new Error('Chat window was not found');
+    this.mainPage.chatWindow.addMessageToChat(data);
   }
 }
 
