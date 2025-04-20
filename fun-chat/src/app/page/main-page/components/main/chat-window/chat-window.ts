@@ -1,3 +1,4 @@
+import { api } from '../../../../../API/api';
 import { Message, MessageHistoryResponse } from '../../../../../API/types';
 import BaseComponent from '../../../../../shared/base-component/base-component';
 import './chat-window.css';
@@ -15,6 +16,8 @@ export default class ChatWindow extends BaseComponent {
   login: string | undefined;
   messageTextarea: MessageTextarea | undefined;
   separateLine: SeparateLine | undefined;
+  allMessages: MessageComponent[] = [];
+  unreadMessages: MessageComponent[] = [];
 
   constructor() {
     super({ tag: 'div', styles: ['chat-window'] });
@@ -53,7 +56,13 @@ export default class ChatWindow extends BaseComponent {
       this.messageList.addChildren([this.separateLine, messageBlock]);
       messageBlock.getNode().scrollIntoView(false);
     }
+
+    if (messageData.from === this.login && !messageData.status.isReaded) {
+      this.unreadMessages.push(messageBlock);
+    }
+
     this.messageList.addChildren([messageBlock]);
+    this.allMessages.push(messageBlock);
 
     if (!this.separateLine) {
       this.messageList.getNode().scrollTop = this.getNode().scrollHeight;
@@ -66,17 +75,25 @@ export default class ChatWindow extends BaseComponent {
     }
   }
 
+  hideSeparateLine() {
+    if (this.separateLine) {
+      this.separateLine.removeThisNode();
+      for (const unreadMessage of this.unreadMessages) {
+        api.sendRequestForReadStatusChange(
+          unreadMessage.from,
+          unreadMessage.messageId,
+        );
+      }
+    }
+  }
+
   setListenersToRemoveSeparateLine() {
     this.messageList.addListenerToEvent('click', () => {
-      if (this.separateLine) {
-        this.separateLine.removeThisNode();
-      }
+      this.hideSeparateLine();
     });
 
     this.messageList.addListenerToEvent('scroll', () => {
-      if (this.separateLine) {
-        this.separateLine.removeThisNode();
-      }
+      this.hideSeparateLine();
     });
   }
 }

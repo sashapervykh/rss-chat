@@ -3,8 +3,21 @@ export type ServerResponses =
   | ServerUsersResponse
   | ServerErrorResponse
   | ServerMessageResponse
-  | MessageHistoryResponse;
+  | MessageHistoryResponse
+  | ReadChangeResponse;
 
+export interface ReadChangeResponse {
+  id: null;
+  type: ResponseTypes.readMessage;
+  payload: {
+    message: {
+      id: string;
+      status: {
+        isReaded: boolean;
+      };
+    };
+  };
+}
 export interface MessageHistoryResponse {
   id: string;
   type: ResponseTypes.messageHistory;
@@ -49,6 +62,7 @@ export enum ResponseTypes {
   inactiveUsers = 'USER_INACTIVE',
   messageHistory = 'MSG_FROM_USER',
   oneMessage = 'MSG_SEND',
+  readMessage = 'MSG_READ',
 }
 
 export interface ErrorPayload {

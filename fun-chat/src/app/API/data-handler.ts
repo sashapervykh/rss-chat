@@ -3,6 +3,7 @@ import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
 import {
   MessageHistoryResponse,
+  ReadChangeResponse,
   ResponseTypes,
   ServerLogResponse,
   ServerMessageResponse,
@@ -79,6 +80,10 @@ export default class DataHandler {
         this.mainPage.chatWindow.processIncomingLetter(data.payload.message);
         break;
       }
+      case ResponseTypes.readMessage: {
+        this.changeReadStatus(data);
+        break;
+      }
 
       default: {
         console.log('Something strange');
@@ -142,6 +147,20 @@ export default class DataHandler {
 
     this.mainPage.chatWindow.messageList.removeChildren();
     this.mainPage.chatWindow.openDialogue(data, this.statusOfChosenUser);
+  }
+
+  private changeReadStatus(data: ReadChangeResponse) {
+    if (!this.mainPage.chatWindow)
+      throw new Error('Data about chat window are not received');
+    const readMessage = this.mainPage.chatWindow.allMessages.find(
+      (element) => element.messageId === data.payload.message.id,
+    );
+    if (readMessage?.messageInfo) {
+      readMessage.messageInfo.changeTextOfStatus(
+        'isReaded',
+        data.payload.message.status.isReaded,
+      );
+    }
   }
 }
 

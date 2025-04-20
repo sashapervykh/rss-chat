@@ -32,9 +32,6 @@ export default class MessageForm extends FormComponent {
       } else {
         buttonToSend.getNode().disabled = false;
       }
-      if (chatWindow.separateLine) {
-        chatWindow.separateLine.removeThisNode();
-      }
     });
 
     this.addListenerToSubmit((event: Event) => {
@@ -49,6 +46,9 @@ export default class MessageForm extends FormComponent {
       });
       chatWindow.messageTextarea.getNode().value = '';
       buttonToSend.getNode().disabled = true;
+      if (chatWindow.separateLine) {
+        chatWindow.separateLine.removeThisNode();
+      }
     });
   }
 }

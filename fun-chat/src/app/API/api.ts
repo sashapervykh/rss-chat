@@ -83,6 +83,20 @@ class API {
     console.log(request);
     this.websocket.send(JSON.stringify(request));
   }
+
+  sendRequestForReadStatusChange(login: string, messageId: string) {
+    const request = {
+      id: login,
+      type: ResponseTypes.readMessage,
+      payload: {
+        message: {
+          id: messageId,
+        },
+      },
+    };
+    console.log(request);
+    this.websocket.send(JSON.stringify(request));
+  }
 }
 
 export const api = new API();

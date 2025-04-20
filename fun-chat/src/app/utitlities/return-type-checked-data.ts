@@ -24,10 +24,8 @@ export default function returnTypeCheckedData(data: unknown): ServerResponses {
     throw new Error('The id of received data differs from awaited data.');
   }
 
-  const id = parsedData.id;
-
   return checkTypeAndPayload({
-    id: id,
+    id: parsedData.id,
     type: parsedData.type,
     payload: parsedData.payload,
   });
@@ -61,12 +59,13 @@ function checkTypeAndPayload(data: {
       const payload = returnTypeCheckedMessagePayload(data.payload);
       return { id: data.id, type: data.type, payload: payload };
     }
-    case ResponseTypes.error: {
-      const payload = returnTypeCheckedErrorPayload(data.payload);
+    case ResponseTypes.readMessage: {
+      if (data.id !== null) throw new Error('Data id has the wrong type');
+      const payload = returnCheckedReadChangeStatus(data.payload);
       return { id: data.id, type: data.type, payload: payload };
     }
     default: {
-      throw new Error('Type of received data differs from awaited');
+      throw new Error('Something strange');
     }
   }
 }
@@ -134,23 +133,23 @@ function returnLoginAndStatus(data: unknown) {
   return { login: data.login, isLogined: data.isLogined };
 }
 
-function returnTypeCheckedErrorPayload(payload: unknown) {
-  if (typeof payload !== 'object' || !payload)
-    throw new Error('The received payload is not an object or null');
+// function returnTypeCheckedErrorPayload(payload: unknown) {
+//   if (typeof payload !== 'object' || !payload)
+//     throw new Error('The received payload is not an object or null');
 
-  if (Object.keys(payload).length !== 1 || !('error' in payload)) {
-    throw new Error(
-      'The properties of received payload differs from awaited data.',
-    );
-  }
+//   if (Object.keys(payload).length !== 1 || !('error' in payload)) {
+//     throw new Error(
+//       'The properties of received payload differs from awaited data.',
+//     );
+//   }
 
-  if (typeof payload.error !== 'string')
-    throw new TypeError(
-      'The error properties of received payload differs from awaited data.',
-    );
+//   if (typeof payload.error !== 'string')
+//     throw new TypeError(
+//       'The error properties of received payload differs from awaited data.',
+//     );
 
-  return { error: payload.error };
-}
+//   return { error: payload.error };
+// }
 
 function returnTypeCheckedMessagePayload(payload: unknown) {
   if (typeof payload !== 'object' || !payload)
@@ -277,4 +276,38 @@ function returnCheckedMessageFromUserPayload(payload: unknown) {
   }
 
   return { messages: checkedMessages };
+}
+
+function returnCheckedReadChangeStatus(payload: unknown) {
+  const objectPayload = returnObject(payload);
+  if (
+    Object.keys(objectPayload).length !== 1 ||
+    !('message' in objectPayload)
+  ) {
+    throw new Error('ReadChange payload has the wrong type.');
+  }
+
+  const message = returnObject(objectPayload.message);
+  if (
+    Object.keys(message).length !== 2 ||
+    !('id' in message) ||
+    !('status' in message)
+  ) {
+    throw new Error('ReadChange payload has the wrong type.');
+  }
+
+  if (typeof message.id !== 'string') {
+    throw new TypeError('ReadChange payload has the wrong type.');
+  }
+
+  const status = returnObject(message.status);
+
+  if (Object.keys(status).length !== 1 || !('isReaded' in status)) {
+    throw new Error('ReadChange payload has the wrong type.');
+  }
+
+  if (typeof status.isReaded !== 'boolean') {
+    throw new TypeError('ReadChange payload has the wrong type.');
+  }
+  return { message: { id: message.id, status: { isReaded: status.isReaded } } };
 }
