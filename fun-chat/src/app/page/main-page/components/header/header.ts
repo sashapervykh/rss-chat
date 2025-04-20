@@ -1,4 +1,5 @@
 import { api } from '../../../../API/api';
+import { dataHandler } from '../../../../API/data-handler';
 import { ResponseTypes } from '../../../../API/types';
 import BaseComponent from '../../../../shared/base-component/base-component';
 import ButtonComponent from '../../../../shared/button-component/button-component';
@@ -32,8 +33,8 @@ export default class HeaderComponent extends BaseComponent {
         api.sendLogRequestToServer({
           id: 'Log Out',
           type: ResponseTypes.logout,
-          login: api.currentUser,
-          password: api.currentPassword,
+          login: dataHandler.currentUser,
+          password: dataHandler.currentPassword,
         });
       },
     });

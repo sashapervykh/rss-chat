@@ -1,4 +1,5 @@
 import { api } from '../API/api';
+import { dataHandler } from '../API/data-handler';
 import { ResponseTypes } from '../API/types';
 import AboutPage from '../page/about-page/about-page';
 import LoginPage from '../page/login-page/login-page';
@@ -55,7 +56,7 @@ function loadMainPage(): void {
     if (!storedPassword) throw new Error('Password was not saved');
 
     if (api.websocket.readyState === 1) {
-      api.mainPage.createMainPage({ userName: storedLogin });
+      dataHandler.mainPage.createMainPage({ userName: storedLogin });
       api.sendLogRequestToServer({
         id: 'Log In',
         type: ResponseTypes.login,
@@ -65,7 +66,7 @@ function loadMainPage(): void {
     } else if (api.websocket.readyState === 0) {
       api.websocket.addEventListener('open', () => {
         console.log(storedLogin);
-        api.mainPage.createMainPage({ userName: storedLogin });
+        dataHandler.mainPage.createMainPage({ userName: storedLogin });
         api.sendLogRequestToServer({
           id: 'Log In',
           type: ResponseTypes.login,
