@@ -1,3 +1,4 @@
+import { api } from '../../../../../../../API/api';
 import BaseComponent from '../../../../../../../shared/base-component/base-component';
 import './li-component.css';
 import { UserListData } from './types';
@@ -13,5 +14,6 @@ export default class LiComponent extends BaseComponent {
     });
     this.iSshown = true;
     this.login = userData.login;
+    api.sendRequestForMessagesFromUser(this.login);
   }
 }

@@ -146,10 +146,24 @@ export default class API {
     this.websocket.send(JSON.stringify(request));
   }
 
+  sendRequestForMessagesFromUser(login: string) {
+    const request = {
+      id: login,
+      type: 'MSG_FROM_USER',
+      payload: {
+        user: {
+          login: login,
+        },
+      },
+    };
+
+    this.websocket.send(JSON.stringify(request));
+  }
+
   sendRequestForAllMessages(login: string) {
     const request = {
       id: login,
-      type: ResponseTypes.allUsersMessages,
+      type: ResponseTypes.messagesFromUser,
       payload: { users: { login: login } },
     };
     this.websocket.send(JSON.stringify(request));

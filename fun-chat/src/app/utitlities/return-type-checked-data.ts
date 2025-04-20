@@ -52,6 +52,11 @@ function checkTypeAndPayload(data: {
       const payload = returnTypeCheckedUsersPayload(data.payload);
       return { id: data.id, type: data.type, payload: { users: payload } };
     }
+    case ResponseTypes.messagesFromUser: {
+      if (!data.id) throw new Error('Received id does not comply to awaited');
+      const payload = returnCheckedMessageFromUserPayload(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
     case ResponseTypes.oneMessage: {
       const payload = returnTypeCheckedMessagePayload(data.payload);
       return { id: data.id, type: data.type, payload: payload };
@@ -250,4 +255,26 @@ function returnNumber(data: unknown, key: string) {
     throw new TypeError(`The ${key} property of message has the wrong type`);
   }
   return data;
+}
+
+function returnCheckedMessageFromUserPayload(payload: unknown) {
+  const objectPayload = returnObject(payload);
+  if (
+    Object.keys(objectPayload).length !== 1 ||
+    !('messages' in objectPayload)
+  ) {
+    throw new Error('Messages payload has the wrong type.');
+  }
+
+  if (!Array.isArray(objectPayload.messages)) {
+    throw new TypeError('Messages payload has the wrong type.');
+  }
+
+  const checkedMessages = [];
+
+  for (const message of objectPayload.messages) {
+    checkedMessages.push(returnTypeCheckedMessage(message));
+  }
+
+  return { messages: checkedMessages };
 }

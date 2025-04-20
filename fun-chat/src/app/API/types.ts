@@ -2,7 +2,16 @@ export type ServerResponses =
   | ServerLogResponse
   | ServerUsersResponse
   | ServerErrorResponse
-  | ServerMessageResponse;
+  | ServerMessageResponse
+  | MessageFromUserResponse;
+
+export interface MessageFromUserResponse {
+  id: string;
+  type: ResponseTypes.messagesFromUser;
+  payload: {
+    messages: Message[];
+  };
+}
 
 export interface ServerLogResponse {
   id: string | null;
@@ -38,7 +47,7 @@ export enum ResponseTypes {
   error = 'ERROR',
   activeUsers = 'USER_ACTIVE',
   inactiveUsers = 'USER_INACTIVE',
-  allUsersMessages = 'MSG_FROM_USER',
+  messagesFromUser = 'MSG_FROM_USER',
   oneMessage = 'MSG_SEND',
 }
 
