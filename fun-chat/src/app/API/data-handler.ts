@@ -2,6 +2,7 @@ import LoginPage from '../page/login-page/login-page';
 import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
 import {
+  MessageHistoryResponse,
   ResponseTypes,
   ServerLogResponse,
   ServerMessageResponse,
@@ -30,6 +31,10 @@ class DataHandler {
       case ResponseTypes.activeUsers:
       case ResponseTypes.inactiveUsers: {
         this.drawUsersList(data);
+        break;
+      }
+      case ResponseTypes.messageHistory: {
+        this.showAmountOfUnreadLetters(data);
         break;
       }
       case ResponseTypes.oneMessage: {
@@ -93,6 +98,18 @@ class DataHandler {
   private drawSendedMessage(data: ServerMessageResponse) {
     if (!this.mainPage.chatWindow) throw new Error('Chat window was not found');
     this.mainPage.chatWindow.addMessageToChat(data);
+  }
+
+  private showAmountOfUnreadLetters(data: MessageHistoryResponse) {
+    if (!this.mainPage.usersUl)
+      throw new Error('There is not data about users list');
+    const element = this.mainPage.usersUl.usersList.find(
+      (element) => element.login === data.id,
+    );
+    const unreadMessages = data.payload.messages.filter(
+      (message) => message.from === data.id && !message.status.isReaded,
+    );
+    element?.setTextContent(`${data.id} (${unreadMessages.length.toString()})`);
   }
 }
 

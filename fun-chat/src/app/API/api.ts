@@ -91,7 +91,7 @@ class API {
   sendRequestForAllMessages(login: string) {
     const request = {
       id: login,
-      type: ResponseTypes.messagesFromUser,
+      type: ResponseTypes.messageHistory,
       payload: { users: { login: login } },
     };
     this.websocket.send(JSON.stringify(request));

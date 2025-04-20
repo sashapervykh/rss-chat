@@ -52,7 +52,7 @@ function checkTypeAndPayload(data: {
       const payload = returnTypeCheckedUsersPayload(data.payload);
       return { id: data.id, type: data.type, payload: { users: payload } };
     }
-    case ResponseTypes.messagesFromUser: {
+    case ResponseTypes.messageHistory: {
       if (!data.id) throw new Error('Received id does not comply to awaited');
       const payload = returnCheckedMessageFromUserPayload(data.payload);
       return { id: data.id, type: data.type, payload: payload };

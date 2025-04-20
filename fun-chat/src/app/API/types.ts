@@ -3,11 +3,11 @@ export type ServerResponses =
   | ServerUsersResponse
   | ServerErrorResponse
   | ServerMessageResponse
-  | MessageFromUserResponse;
+  | MessageHistoryResponse;
 
-export interface MessageFromUserResponse {
+export interface MessageHistoryResponse {
   id: string;
-  type: ResponseTypes.messagesFromUser;
+  type: ResponseTypes.messageHistory;
   payload: {
     messages: Message[];
   };
@@ -47,7 +47,7 @@ export enum ResponseTypes {
   error = 'ERROR',
   activeUsers = 'USER_ACTIVE',
   inactiveUsers = 'USER_INACTIVE',
-  messagesFromUser = 'MSG_FROM_USER',
+  messageHistory = 'MSG_FROM_USER',
   oneMessage = 'MSG_SEND',
 }
 

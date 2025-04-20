@@ -19,7 +19,10 @@ export default class UlComponent extends BaseComponent {
       if (!(event.target instanceof HTMLLIElement)) return;
       if (!event.target.textContent)
         throw new Error('Impossible text value of chosen element');
-      const chosenUserLogin = event.target.textContent;
+      const chosenUserLogin = event.target.textContent.slice(
+        0,
+        event.target.textContent.lastIndexOf(' '),
+      );
       const style = event.target.classList.contains('online')
         ? 'online'
         : 'offline';
