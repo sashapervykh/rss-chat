@@ -18,7 +18,10 @@ export default class ChatWindow extends BaseComponent {
 
   addChatWindowChildren() {
     this.h2 = new BaseComponent({ tag: 'h2', styles: ['chat_h2'] });
-    this.messageList = new BaseComponent({ tag: 'div' });
+    this.messageList = new BaseComponent({
+      tag: 'div',
+      styles: ['message-list'],
+    });
     const messageForm = new MessageForm(this);
     this.addChildren([this.h2, this.messageList, messageForm]);
   }
@@ -42,6 +45,7 @@ export default class ChatWindow extends BaseComponent {
     if (!this.messageList) throw new Error('Message list was not found');
     const messageBlock = new MessageComponent(messageData);
     this.messageList.addChildren([messageBlock]);
+    this.messageList.getNode().scrollTop = this.getNode().scrollHeight;
   }
 
   processIncomingLetter(messageData: Message) {
