@@ -9,7 +9,7 @@ import {
   ResponsesToUser,
   ResponseToUserLog,
   ResponseTypes,
-  ServerMessageResponse,
+  SendingMessageResponse,
   ServerUsersResponse,
 } from './types';
 
@@ -129,7 +129,7 @@ export default class DataHandler {
     }
   }
 
-  private drawSendedMessage(data: ServerMessageResponse) {
+  private drawSendedMessage(data: SendingMessageResponse) {
     if (!this.mainPage.chatWindow) throw new Error('Chat window was not found');
     this.mainPage.chatWindow.addMessageToChat(data.payload.message);
   }

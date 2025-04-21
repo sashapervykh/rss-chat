@@ -80,21 +80,12 @@ function returnCheckedTypeAndPayloadForServerRequest(data: {
   id: null;
   type: unknown;
   payload: unknown;
-}) {
+}): RequestsByServer {
   switch (data.type) {
     case ResponseTypes.thirdLogin:
     case ResponseTypes.thirdLogout: {
       const payload = returnTypeCheckedLoginPayload(data.payload);
       return { id: data.id, type: data.type, payload: { user: payload } };
-    }
-    case ResponseTypes.activeUsers:
-    case ResponseTypes.inactiveUsers: {
-      const payload = returnTypeCheckedUsersPayload(data.payload);
-      return { id: data.id, type: data.type, payload: { users: payload } };
-    }
-    case ResponseTypes.messageHistory: {
-      const payload = returnCheckedMessageFromUserPayload(data.payload);
-      return { id: data.id, type: data.type, payload: payload };
     }
     case ResponseTypes.oneMessage: {
       const payload = returnTypeCheckedMessagePayload(data.payload);

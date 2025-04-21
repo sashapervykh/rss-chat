@@ -2,16 +2,14 @@ export type ResponsesToUser =
   | ResponseToUserLog
   | ServerUsersResponse
   | ServerErrorResponse
-  | ServerMessageResponse
+  | SendingMessageResponse
   | MessageHistoryResponse
   | ReadChangeResponse;
 
 export type RequestsByServer =
   | ResponseToThirdPartyLog
-  | ServerUsersResponse
   | ServerErrorResponse
-  | ServerMessageResponse
-  | MessageHistoryResponse
+  | ReceivingMessageResponse
   | ReadChangeResponse;
 
 export interface ResponseToUserLog {
@@ -40,8 +38,14 @@ export interface ServerErrorResponse {
   payload: ErrorPayload;
 }
 
-export interface ServerMessageResponse {
-  id: string | null;
+export interface SendingMessageResponse {
+  id: null;
+  type: ResponseTypes.oneMessage;
+  payload: { message: Message };
+}
+
+export interface ReceivingMessageResponse {
+  id: null;
   type: ResponseTypes.oneMessage;
   payload: { message: Message };
 }
