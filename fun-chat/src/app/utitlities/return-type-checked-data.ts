@@ -60,7 +60,6 @@ function checkTypeAndPayload(data: {
       return { id: data.id, type: data.type, payload: payload };
     }
     case ResponseTypes.readMessage: {
-      if (data.id !== null) throw new Error('Data id has the wrong type');
       const payload = returnCheckedReadChangeStatus(data.payload);
       return { id: data.id, type: data.type, payload: payload };
     }

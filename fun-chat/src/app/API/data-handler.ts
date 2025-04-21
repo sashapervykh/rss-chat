@@ -49,6 +49,11 @@ export default class DataHandler {
         this.drawSendedMessage(data);
         break;
       }
+      case ResponseTypes.readMessage: {
+        if (!data.id) return;
+        api.sendRequestForMessageHistory(data.id);
+        break;
+      }
       default: {
         console.log('Something strange');
       }
@@ -162,10 +167,6 @@ export default class DataHandler {
         'isReaded',
         data.payload.message.status.isReaded,
       );
-      if (!this.mainPage.chatWindow.login)
-        throw new Error('Data about login are not received');
-
-      api.sendRequestForMessageHistory(this.mainPage.chatWindow.login);
     }
   }
 }

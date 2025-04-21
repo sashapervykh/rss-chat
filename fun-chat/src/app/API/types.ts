@@ -7,7 +7,7 @@ export type ServerResponses =
   | ReadChangeResponse;
 
 export interface ReadChangeResponse {
-  id: null;
+  id: string | null;
   type: ResponseTypes.readMessage;
   payload: {
     message: {
