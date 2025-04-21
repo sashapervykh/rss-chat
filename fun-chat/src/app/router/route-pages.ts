@@ -35,14 +35,22 @@ function loadAboutPage(): void {
 function loadLoginPage(): void {
   const storedLogin = sessionStorage.getItem('login');
   if (storedLogin) {
-    history.replaceState('main', '', '/main');
+    history.replaceState(
+      'sashapervykh-JSFE2024Q4/fun-chat/main',
+      '',
+      'sashapervykh-JSFE2024Q4/fun-chat/main',
+    );
   } else {
     createLoginPageContent();
   }
 }
 
 function createLoginPageContent() {
-  history.replaceState('login', '', '/login');
+  history.replaceState(
+    'sashapervykh-JSFE2024Q4/fun-chat/login',
+    '',
+    'sashapervykh-JSFE2024Q4/fun-chat/login',
+  );
   document.body.replaceChildren();
   const loginPage = new LoginPage();
   loginPage.createLoginPage();
