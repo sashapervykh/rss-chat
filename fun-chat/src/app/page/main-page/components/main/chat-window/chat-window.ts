@@ -13,7 +13,7 @@ export default class ChatWindow extends BaseComponent {
     tag: 'div',
     styles: ['message-list'],
   });
-  login: string | undefined;
+  addressee: string | undefined;
   messageTextarea: MessageTextarea | undefined;
   separateLine: SeparateLine | undefined;
   allMessages: MessageComponent[] = [];
@@ -37,7 +37,7 @@ export default class ChatWindow extends BaseComponent {
     this.separateLine = undefined;
     this.messageTextarea.getNode().disabled = false;
     this.h2.setTextContent(data.id);
-    this.login = data.id;
+    this.addressee = data.id;
     this.h2.addStyles([style]);
     this.h2.removeStyles([style === 'online' ? 'offline' : 'online']);
     for (const message of data.payload.messages) {
@@ -47,9 +47,8 @@ export default class ChatWindow extends BaseComponent {
 
   addMessageToChat(messageData: Message) {
     const messageBlock = new MessageComponent(messageData);
-    console.log(messageData, this.separateLine, messageData.status.isReaded);
     if (
-      messageData.from === this.login &&
+      messageData.from === this.addressee &&
       !this.separateLine &&
       !messageData.status.isReaded
     ) {
@@ -58,7 +57,7 @@ export default class ChatWindow extends BaseComponent {
       messageBlock.getNode().scrollIntoView(false);
     }
 
-    if (messageData.from === this.login && !messageData.status.isReaded) {
+    if (messageData.from === this.addressee && !messageData.status.isReaded) {
       this.unreadMessages.push(messageBlock);
     }
 
@@ -71,7 +70,7 @@ export default class ChatWindow extends BaseComponent {
   }
 
   processIncomingLetter(messageData: Message) {
-    if (this.login === messageData.from) {
+    if (this.addressee === messageData.from) {
       this.addMessageToChat(messageData);
     }
     api.sendRequestForMessageHistory(messageData.from);

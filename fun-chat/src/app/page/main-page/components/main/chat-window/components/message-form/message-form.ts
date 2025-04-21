@@ -38,10 +38,10 @@ export default class MessageForm extends FormComponent {
       event.preventDefault();
       if (!chatWindow.messageTextarea)
         throw new Error('Textarea was not created');
-      if (!chatWindow.login) throw new Error('Login was not created');
+      if (!chatWindow.addressee) throw new Error('Login was not created');
 
       api.sendOutgoingMessageRequest({
-        login: chatWindow.login,
+        login: chatWindow.addressee,
         message: chatWindow.messageTextarea.getNode().value,
       });
 

@@ -1,14 +1,18 @@
 import LoginPage from '../page/login-page/login-page';
 import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
+import returnNonNullableValue from '../utitlities/return-defined-value';
 import { api } from './api';
 import {
   DeleteByOtherResponse,
   DeleteByUserResponse,
+  EditByOtherResponse,
+  EditByUserResponse,
   MessageHistoryResponse,
   ReadByOtherResponse,
   RequestsByServer,
   ResponsesToUser,
+  ResponseToThirdPartyLog,
   ResponseToUserLog,
   ResponseTypes,
   SendingMessageResponse,
@@ -26,7 +30,6 @@ export default class DataHandler {
   statusOfChosenUser: 'online' | 'offline' = 'offline';
 
   processResponseToUser(data: ResponsesToUser) {
-    console.log(data);
     switch (data.type) {
       case ResponseTypes.login: {
         this.doWhenUserLogIn(data);
@@ -42,10 +45,7 @@ export default class DataHandler {
         break;
       }
       case ResponseTypes.messageHistory: {
-        this.showAmountOfUnreadLetters(data);
-        if (this.isOpeningDialogue) {
-          this.showMessageHistory(data);
-        }
+        this.processMessageHistoryResponse(data);
         break;
       }
       case ResponseTypes.oneMessage: {
@@ -60,6 +60,10 @@ export default class DataHandler {
         this.removeDeletedMessage(data);
         break;
       }
+      case ResponseTypes.editMessage: {
+        this.processEditByUserResponse(data);
+        break;
+      }
       default: {
         console.log('Something strange');
       }
@@ -67,14 +71,9 @@ export default class DataHandler {
   }
 
   processRequestFromServer(data: RequestsByServer) {
-    console.log(data);
     switch (data.type) {
       case ResponseTypes.thirdLogin: {
-        if (!this.mainPage.usersUl)
-          throw new Error('Data about user list are not received');
-        this.mainPage.usersUl.updateUserListForThirdPartyLogIn(
-          data.payload.user,
-        );
+        this.processThirdPartyLogIn(data);
         break;
       }
       case ResponseTypes.thirdLogout: {
@@ -98,6 +97,10 @@ export default class DataHandler {
       case ResponseTypes.deleteMessage: {
         this.updateCountersAfterDeleting();
         this.removeDeletedMessage(data);
+        break;
+      }
+      case ResponseTypes.editMessage: {
+        this.processEditByOtherResponse(data);
         break;
       }
       default: {
@@ -198,6 +201,43 @@ export default class DataHandler {
     for (const user of this.mainPage.usersUl.usersList) {
       api.sendRequestForMessageHistory(user.login);
     }
+  }
+
+  private processMessageHistoryResponse(data: MessageHistoryResponse) {
+    this.showAmountOfUnreadLetters(data);
+    if (this.isOpeningDialogue) {
+      this.showMessageHistory(data);
+    }
+  }
+
+  private processEditByUserResponse(data: EditByUserResponse) {
+    const chatWindow = returnNonNullableValue(this.mainPage.chatWindow);
+    const editedMessage = chatWindow.allMessages.find(
+      (message) => message.messageId === data.payload.message.id,
+    );
+    editedMessage?.buttonToEdit.saveEditedResult(data.payload.message.text);
+    editedMessage?.messageInfo.changeTextOfStatus(
+      'isEdited',
+      data.payload.message.status.isEdited,
+    );
+  }
+
+  private processEditByOtherResponse(data: EditByOtherResponse) {
+    const chatWindow = returnNonNullableValue(this.mainPage.chatWindow);
+    const editedMessage = chatWindow.allMessages.find(
+      (message) => message.messageId === data.payload.message.id,
+    );
+    editedMessage?.messageText.setTextContent(data.payload.message.text);
+    editedMessage?.messageInfo.changeTextOfStatus(
+      'isEdited',
+      data.payload.message.status.isEdited,
+    );
+  }
+
+  private processThirdPartyLogIn(data: ResponseToThirdPartyLog) {
+    if (!this.mainPage.usersUl)
+      throw new Error('Data about user list are not received');
+    this.mainPage.usersUl.updateUserListForThirdPartyLogIn(data.payload.user);
   }
 }
 

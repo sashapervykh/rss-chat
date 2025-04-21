@@ -41,11 +41,7 @@ export default function returnTypeCheckedData(
   });
 }
 
-function returnCheckedTypeAndPayloadForUserRequest(data: {
-  id: string;
-  type: unknown;
-  payload: unknown;
-}) {
+function returnCheckedTypeAndPayloadForUserRequest(data: DataWithStringId) {
   switch (data.type) {
     case ResponseTypes.logout:
     case ResponseTypes.login: {
@@ -73,17 +69,19 @@ function returnCheckedTypeAndPayloadForUserRequest(data: {
       const payload = returnDeletePayload(data.payload);
       return { id: data.id, type: data.type, payload: payload };
     }
+    case ResponseTypes.editMessage: {
+      const payload = returnEditPayload(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
     default: {
       throw new Error('Something strange');
     }
   }
 }
 
-function returnCheckedTypeAndPayloadForServerRequest(data: {
-  id: null;
-  type: unknown;
-  payload: unknown;
-}): RequestsByServer {
+function returnCheckedTypeAndPayloadForServerRequest(
+  data: DataWithNullId,
+): RequestsByServer {
   switch (data.type) {
     case ResponseTypes.thirdLogin:
     case ResponseTypes.thirdLogout: {
@@ -100,6 +98,10 @@ function returnCheckedTypeAndPayloadForServerRequest(data: {
     }
     case ResponseTypes.deleteMessage: {
       const payload = returnDeletePayload(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
+    case ResponseTypes.editMessage: {
+      const payload = returnEditPayload(data.payload);
       return { id: data.id, type: data.type, payload: payload };
     }
     default: {
@@ -384,4 +386,55 @@ function returnDeletePayload(payload: unknown) {
   return {
     message: { id: message.id, status: { isDeleted: status.isDeleted } },
   };
+}
+
+function returnEditPayload(payload: unknown) {
+  const objectPayload = returnObject(payload);
+  if (
+    Object.keys(objectPayload).length !== 1 ||
+    !('message' in objectPayload)
+  ) {
+    throw new Error('ReadChange payload has the wrong type.');
+  }
+  const message = returnObject(objectPayload.message);
+  if (
+    Object.keys(message).length !== 3 ||
+    !('id' in message) ||
+    !('text' in message) ||
+    !('status' in message)
+  ) {
+    throw new Error('Edit payload has the wrong type.');
+  }
+  if (typeof message.id !== 'string') {
+    throw new TypeError('Edit payload has the wrong type.');
+  }
+  if (typeof message.text !== 'string') {
+    throw new TypeError('Edit payload has the wrong type.');
+  }
+  const status = returnObject(message.status);
+  if (Object.keys(status).length !== 1 || !('isEdited' in status)) {
+    throw new Error('ReadChange payload has the wrong type.');
+  }
+  if (typeof status.isEdited !== 'boolean') {
+    throw new TypeError('ReadChange payload has the wrong type.');
+  }
+  return {
+    message: {
+      id: message.id,
+      text: message.text,
+      status: { isEdited: status.isEdited },
+    },
+  };
+}
+
+interface DataWithStringId {
+  id: string;
+  type: unknown;
+  payload: unknown;
+}
+
+interface DataWithNullId {
+  id: null;
+  type: unknown;
+  payload: unknown;
 }

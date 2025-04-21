@@ -109,6 +109,20 @@ class API {
     };
     this.websocket.send(JSON.stringify(request));
   }
+
+  sendEditRequest(login: string, messageId: string, messageText: string) {
+    const request = {
+      id: login,
+      type: ResponseTypes.editMessage,
+      payload: {
+        message: {
+          id: messageId,
+          text: messageText,
+        },
+      },
+    };
+    this.websocket.send(JSON.stringify(request));
+  }
 }
 
 export const api = new API();

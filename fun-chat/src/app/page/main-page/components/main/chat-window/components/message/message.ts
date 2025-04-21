@@ -3,7 +3,9 @@ import { dataHandler } from '../../../../../../../API/data-handler';
 import { Message } from '../../../../../../../API/types';
 import BaseComponent from '../../../../../../../shared/base-component/base-component';
 import ButtonComponent from '../../../../../../../shared/button-component/button-component';
+import ButtonToEdit from './components/button-to-edit';
 import MessageInfo from './components/message-info';
+import MessageText from './components/message-text';
 import './message.css';
 
 export default class MessageComponent extends BaseComponent {
@@ -12,11 +14,13 @@ export default class MessageComponent extends BaseComponent {
   messageInfo: MessageInfo;
   messageType: 'incoming' | 'outgoing';
   messageData: Message;
+  messageText: MessageText;
+  buttonToEdit: ButtonToEdit;
 
   constructor(messageData: Message) {
     super({ tag: 'div', styles: ['message'] });
     this.messageId = messageData.id;
-
+    this.buttonToEdit = new ButtonToEdit(this);
     this.from = messageData.from;
     this.messageType =
       messageData.from === dataHandler.currentUser ? 'outgoing' : 'incoming';
@@ -25,6 +29,7 @@ export default class MessageComponent extends BaseComponent {
       messageType: this.messageType,
       messageData: messageData,
     });
+    this.messageText = new MessageText(messageData.text);
     this.showMessage(messageData);
   }
 
@@ -34,16 +39,12 @@ export default class MessageComponent extends BaseComponent {
       text: `${new Date(messageData.datetime).toLocaleDateString()}, ${new Date(messageData.datetime).toLocaleTimeString()}, ${messageData.from}`,
       styles: ['sender-name'],
     });
-    const messageText = new BaseComponent({
-      tag: 'p',
-      text: messageData.text,
-      styles: ['message-text'],
-    });
+
     const messageButtons = new BaseComponent({
       tag: 'div',
       styles: ['message-buttons'],
       children: [
-        new ButtonComponent({ text: 'Edit', styles: ['message-button'] }),
+        this.buttonToEdit,
         new ButtonComponent({
           text: 'Delete',
           styles: ['message-button'],
@@ -56,13 +57,13 @@ export default class MessageComponent extends BaseComponent {
     if (dataHandler.currentUser === messageData.from) {
       this.addChildren([
         senderName,
-        messageText,
+        this.messageText,
         this.messageInfo,
         messageButtons,
       ]);
       this.addStyles(['outgoing-message']);
     } else {
-      this.addChildren([senderName, messageText, this.messageInfo]);
+      this.addChildren([senderName, this.messageText, this.messageInfo]);
     }
   }
 }
