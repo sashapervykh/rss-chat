@@ -7,7 +7,7 @@ export const buttonToAbout = (styles: string[]) =>
     styles: styles,
     onClickAction: () => {
       document.body.replaceChildren();
-      history.pushState('about', '', '/about');
+      history.pushState('about', '', '/sashapervykh-JSFE2024Q4/fun-chat/about');
       const aboutPage = new AboutPage();
       aboutPage.createAboutPage();
     },

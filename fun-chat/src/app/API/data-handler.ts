@@ -117,7 +117,7 @@ export default class DataHandler {
 
   private doWhenUserLogIn(data: ResponseToUserLog) {
     clearBody();
-    history.replaceState('main', '', '/sashapervykh-JSFE2024Q4/fun-chat/login');
+    history.replaceState('main', '', '/sashapervykh-JSFE2024Q4/fun-chat/main');
     this.mainPage.createMainPage({ userName: data.payload.user.login });
   }
 
