@@ -17,11 +17,11 @@ export function routePages(state: string): void {
     }
 
     case 'login': {
-      loadLoginPage(state);
+      loadLoginPage();
       break;
     }
     default: {
-      loadLoginPage();
+      loadLoginPage(state);
     }
   }
 }
