@@ -44,6 +44,7 @@ export default class MessageForm extends FormComponent {
         login: chatWindow.login,
         message: chatWindow.messageTextarea.getNode().value,
       });
+
       chatWindow.messageTextarea.getNode().value = '';
       buttonToSend.getNode().disabled = true;
       if (chatWindow.separateLine) {

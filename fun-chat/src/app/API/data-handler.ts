@@ -1,6 +1,7 @@
 import LoginPage from '../page/login-page/login-page';
 import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
+import { api } from './api';
 import {
   MessageHistoryResponse,
   ReadChangeResponse,
@@ -133,6 +134,7 @@ export default class DataHandler {
     const element = this.mainPage.usersUl.usersList.find(
       (element) => element.login === data.id,
     );
+    console.log(element);
     const unreadMessages = data.payload.messages.filter(
       (message) => message.from === data.id && !message.status.isReaded,
     );
@@ -160,6 +162,10 @@ export default class DataHandler {
         'isReaded',
         data.payload.message.status.isReaded,
       );
+      if (!this.mainPage.chatWindow.login)
+        throw new Error('Data about login are not received');
+
+      api.sendRequestForMessageHistory(this.mainPage.chatWindow.login);
     }
   }
 }

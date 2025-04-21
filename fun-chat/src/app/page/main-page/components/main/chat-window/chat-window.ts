@@ -73,6 +73,7 @@ export default class ChatWindow extends BaseComponent {
     if (this.login === messageData.from) {
       this.addMessageToChat(messageData);
     }
+    api.sendRequestForMessageHistory(messageData.from);
   }
 
   hideSeparateLine() {
