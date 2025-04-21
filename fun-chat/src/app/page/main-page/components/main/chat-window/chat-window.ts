@@ -3,7 +3,7 @@ import { Message, MessageHistoryResponse } from '../../../../../API/types';
 import BaseComponent from '../../../../../shared/base-component/base-component';
 import './chat-window.css';
 import MessageForm from './components/message-form/message-form';
-import MessageTextarea from './components/message-form/message-textarea/message-textarea';
+import MessageTextarea from './components/message-form/message-input/message-input';
 import MessageComponent from './components/message/message';
 import SeparateLine from './components/separate-line/separate-line';
 
