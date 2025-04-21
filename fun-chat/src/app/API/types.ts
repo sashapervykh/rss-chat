@@ -4,13 +4,13 @@ export type ResponsesToUser =
   | ServerErrorResponse
   | SendingMessageResponse
   | MessageHistoryResponse
-  | ReadChangeResponse;
+  | ReadByUserResponse;
 
 export type RequestsByServer =
   | ResponseToThirdPartyLog
   | ServerErrorResponse
   | ReceivingMessageResponse
-  | ReadChangeResponse;
+  | ReadByOtherResponse;
 
 export interface ResponseToUserLog {
   id: string;
@@ -39,7 +39,7 @@ export interface ServerErrorResponse {
 }
 
 export interface SendingMessageResponse {
-  id: null;
+  id: string;
   type: ResponseTypes.oneMessage;
   payload: { message: Message };
 }
@@ -102,8 +102,8 @@ export interface Message {
   };
 }
 
-export interface ReadChangeResponse {
-  id: string | null;
+export interface ReadByUserResponse {
+  id: string;
   type: ResponseTypes.readMessage;
   payload: {
     message: {
@@ -114,6 +114,20 @@ export interface ReadChangeResponse {
     };
   };
 }
+
+export interface ReadByOtherResponse {
+  id: null;
+  type: ResponseTypes.readMessage;
+  payload: {
+    message: {
+      id: string;
+      status: {
+        isReaded: boolean;
+      };
+    };
+  };
+}
+
 export interface MessageHistoryResponse {
   id: string;
   type: ResponseTypes.messageHistory;

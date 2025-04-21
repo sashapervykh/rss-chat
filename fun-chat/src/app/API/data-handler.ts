@@ -4,7 +4,7 @@ import clearBody from '../utitlities/clear-body';
 import { api } from './api';
 import {
   MessageHistoryResponse,
-  ReadChangeResponse,
+  ReadByOtherResponse,
   RequestsByServer,
   ResponsesToUser,
   ResponseToUserLog,
@@ -51,7 +51,6 @@ export default class DataHandler {
         break;
       }
       case ResponseTypes.readMessage: {
-        if (!data.id) return;
         api.sendRequestForMessageHistory(data.id);
         break;
       }
@@ -157,7 +156,7 @@ export default class DataHandler {
     this.mainPage.chatWindow.openDialogue(data, this.statusOfChosenUser);
   }
 
-  private changeReadStatus(data: ReadChangeResponse) {
+  private changeReadStatus(data: ReadByOtherResponse) {
     if (!this.mainPage.chatWindow)
       throw new Error('Data about chat window are not received');
     const readMessage = this.mainPage.chatWindow.allMessages.find(
