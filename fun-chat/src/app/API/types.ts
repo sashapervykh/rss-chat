@@ -1,7 +1,7 @@
 export type ResponsesToUser =
   | ResponseToUserLog
   | ServerUsersResponse
-  | ServerErrorResponse
+  | ErrorToUserResponse
   | SendingMessageResponse
   | MessageHistoryResponse
   | ReadByUserResponse
@@ -10,7 +10,7 @@ export type ResponsesToUser =
 
 export type RequestsByServer =
   | ResponseToThirdPartyLog
-  | ServerErrorResponse
+  | ErrorFromServerResponse
   | ReceivingMessageResponse
   | ReadByOtherResponse
   | DeleteByOtherResponse
@@ -36,8 +36,14 @@ export interface ServerUsersResponse {
   };
 }
 
-export interface ServerErrorResponse {
-  id: string | null;
+export interface ErrorToUserResponse {
+  id: string;
+  type: ResponseTypes.error;
+  payload: ErrorPayload;
+}
+
+export interface ErrorFromServerResponse {
+  id: null;
   type: ResponseTypes.error;
   payload: ErrorPayload;
 }

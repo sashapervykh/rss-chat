@@ -1,8 +1,8 @@
 import { RequestsByServer, ResponsesToUser, ResponseTypes } from '../API/types';
 
-export default function returnTypeCheckedData(
+export function returnTypeCheckedDataWithStringId(
   data: unknown,
-): ResponsesToUser | RequestsByServer {
+): ResponsesToUser | undefined {
   if (typeof data !== 'string')
     throw new Error('The received data is not string');
 
@@ -33,6 +33,33 @@ export default function returnTypeCheckedData(
       payload: parsedData.payload,
     });
   }
+}
+
+export function returnTypeCheckedDataWithNullId(
+  data: unknown,
+): RequestsByServer {
+  if (typeof data !== 'string')
+    throw new Error('The received data is not string');
+
+  const parsedData: unknown = JSON.parse(data);
+
+  if (typeof parsedData !== 'object' || !parsedData)
+    throw new Error('The received data is not an object or null');
+
+  if (
+    Object.keys(parsedData).length !== 3 ||
+    !('id' in parsedData) ||
+    !('type' in parsedData) ||
+    !('payload' in parsedData)
+  ) {
+    throw new Error(
+      'The properties of received data differs from awaited data.',
+    );
+  }
+
+  if (parsedData.id !== null) {
+    throw new Error('The id of received data differs from awaited data.');
+  }
 
   return returnCheckedTypeAndPayloadForServerRequest({
     id: parsedData.id,
@@ -41,7 +68,9 @@ export default function returnTypeCheckedData(
   });
 }
 
-function returnCheckedTypeAndPayloadForUserRequest(data: DataWithStringId) {
+function returnCheckedTypeAndPayloadForUserRequest(
+  data: DataWithStringId,
+): ResponsesToUser {
   switch (data.type) {
     case ResponseTypes.logout:
     case ResponseTypes.login: {

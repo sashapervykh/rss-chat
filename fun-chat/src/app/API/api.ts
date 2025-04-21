@@ -1,4 +1,7 @@
-import returnTypeCheckedData from '../utitlities/return-type-checked-data';
+import {
+  returnTypeCheckedDataWithNullId,
+  returnTypeCheckedDataWithStringId,
+} from '../utitlities/return-type-checked-data';
 import { dataHandler } from './data-handler';
 import { ResponseTypes, UserLoginData } from './types';
 
@@ -11,10 +14,12 @@ class API {
     });
 
     this.websocket.addEventListener('message', (event) => {
-      const response = returnTypeCheckedData(event.data);
-      if (response.id) {
+      const response = returnTypeCheckedDataWithStringId(event.data);
+      if (response) {
         dataHandler.processResponseToUser(response);
+        return;
       } else {
+        const response = returnTypeCheckedDataWithNullId(event.data);
         dataHandler.processRequestFromServer(response);
       }
     });
