@@ -17,7 +17,7 @@ export function routePages(state: string): void {
     }
 
     case 'login': {
-      loadLoginPage();
+      loadLoginPage(state);
       break;
     }
     default: {
