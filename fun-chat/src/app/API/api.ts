@@ -80,7 +80,7 @@ class API {
       type: ResponseTypes.messageHistory,
       payload: { user: { login: login } },
     };
-    console.log(request);
+
     this.websocket.send(JSON.stringify(request));
   }
 
@@ -94,7 +94,19 @@ class API {
         },
       },
     };
-    console.log(request);
+    this.websocket.send(JSON.stringify(request));
+  }
+
+  sendDeleteRequest(login: string, messageId: string) {
+    const request = {
+      id: login,
+      type: ResponseTypes.deleteMessage,
+      payload: {
+        message: {
+          id: messageId,
+        },
+      },
+    };
     this.websocket.send(JSON.stringify(request));
   }
 }

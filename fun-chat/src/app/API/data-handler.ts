@@ -3,6 +3,8 @@ import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
 import { api } from './api';
 import {
+  DeleteByOtherResponse,
+  DeleteByUserResponse,
   MessageHistoryResponse,
   ReadByOtherResponse,
   RequestsByServer,
@@ -54,6 +56,10 @@ export default class DataHandler {
         api.sendRequestForMessageHistory(data.id);
         break;
       }
+      case ResponseTypes.deleteMessage: {
+        this.removeDeletedMessage(data);
+        break;
+      }
       default: {
         console.log('Something strange');
       }
@@ -62,7 +68,6 @@ export default class DataHandler {
 
   processRequestFromServer(data: RequestsByServer) {
     console.log(data);
-
     switch (data.type) {
       case ResponseTypes.thirdLogin: {
         if (!this.mainPage.usersUl)
@@ -90,7 +95,11 @@ export default class DataHandler {
         this.changeReadStatus(data);
         break;
       }
-
+      case ResponseTypes.deleteMessage: {
+        this.updateCountersAfterDeleting();
+        this.removeDeletedMessage(data);
+        break;
+      }
       default: {
         console.log('Something strange');
       }
@@ -139,7 +148,6 @@ export default class DataHandler {
     const element = this.mainPage.usersUl.usersList.find(
       (element) => element.login === data.id,
     );
-    console.log(element);
     const unreadMessages = data.payload.messages.filter(
       (message) => message.from === data.id && !message.status.isReaded,
     );
@@ -167,6 +175,28 @@ export default class DataHandler {
         'isReaded',
         data.payload.message.status.isReaded,
       );
+    }
+  }
+
+  private removeDeletedMessage(
+    data: DeleteByUserResponse | DeleteByOtherResponse,
+  ) {
+    if (!this.mainPage.chatWindow)
+      throw new Error('Data about chat window are not received');
+    const readMessageIndex = this.mainPage.chatWindow.allMessages.findIndex(
+      (element) => element.messageId === data.payload.message.id,
+    );
+    if (readMessageIndex !== -1) {
+      this.mainPage.chatWindow.allMessages[readMessageIndex].removeThisNode();
+      this.mainPage.chatWindow.allMessages.splice(readMessageIndex, 1);
+    }
+  }
+
+  private updateCountersAfterDeleting() {
+    if (!this.mainPage.usersUl)
+      throw new Error('Data about chat window are not received');
+    for (const user of this.mainPage.usersUl.usersList) {
+      api.sendRequestForMessageHistory(user.login);
     }
   }
 }

@@ -1,3 +1,4 @@
+import { api } from '../../../../../../../API/api';
 import { dataHandler } from '../../../../../../../API/data-handler';
 import { Message } from '../../../../../../../API/types';
 import BaseComponent from '../../../../../../../shared/base-component/base-component';
@@ -43,7 +44,13 @@ export default class MessageComponent extends BaseComponent {
       styles: ['message-buttons'],
       children: [
         new ButtonComponent({ text: 'Edit', styles: ['message-button'] }),
-        new ButtonComponent({ text: 'Delete', styles: ['message-button'] }),
+        new ButtonComponent({
+          text: 'Delete',
+          styles: ['message-button'],
+          onClickAction: () => {
+            api.sendDeleteRequest(messageData.from, this.messageId);
+          },
+        }),
       ],
     });
     if (dataHandler.currentUser === messageData.from) {
