@@ -1,6 +1,8 @@
-import { ResponseTypes, ServerResponses } from '../API/types';
+import { RequestsByServer, ResponsesToUser, ResponseTypes } from '../API/types';
 
-export default function returnTypeCheckedData(data: unknown): ServerResponses {
+export default function returnTypeCheckedData(
+  data: unknown,
+): ResponsesToUser | RequestsByServer {
   if (typeof data !== 'string')
     throw new Error('The received data is not string');
 
@@ -24,21 +26,28 @@ export default function returnTypeCheckedData(data: unknown): ServerResponses {
     throw new Error('The id of received data differs from awaited data.');
   }
 
-  return checkTypeAndPayload({
+  if (typeof parsedData.id === 'string') {
+    return returnCheckedTypeAndPayloadForUserRequest({
+      id: parsedData.id,
+      type: parsedData.type,
+      payload: parsedData.payload,
+    });
+  }
+
+  return returnCheckedTypeAndPayloadForServerRequest({
     id: parsedData.id,
     type: parsedData.type,
     payload: parsedData.payload,
   });
 }
 
-function checkTypeAndPayload(data: {
-  id: string | null;
+// REFACTORED CODE
+function returnCheckedTypeAndPayloadForUserRequest(data: {
+  id: string;
   type: unknown;
   payload: unknown;
 }) {
   switch (data.type) {
-    case ResponseTypes.thirdLogin:
-    case ResponseTypes.thirdLogout:
     case ResponseTypes.logout:
     case ResponseTypes.login: {
       const payload = returnTypeCheckedLoginPayload(data.payload);
@@ -46,12 +55,10 @@ function checkTypeAndPayload(data: {
     }
     case ResponseTypes.activeUsers:
     case ResponseTypes.inactiveUsers: {
-      if (!data.id) throw new Error('Received id does not comply to awaited');
       const payload = returnTypeCheckedUsersPayload(data.payload);
       return { id: data.id, type: data.type, payload: { users: payload } };
     }
     case ResponseTypes.messageHistory: {
-      if (!data.id) throw new Error('Received id does not comply to awaited');
       const payload = returnCheckedMessageFromUserPayload(data.payload);
       return { id: data.id, type: data.type, payload: payload };
     }
@@ -68,6 +75,79 @@ function checkTypeAndPayload(data: {
     }
   }
 }
+
+function returnCheckedTypeAndPayloadForServerRequest(data: {
+  id: null;
+  type: unknown;
+  payload: unknown;
+}) {
+  switch (data.type) {
+    case ResponseTypes.thirdLogin:
+    case ResponseTypes.thirdLogout: {
+      const payload = returnTypeCheckedLoginPayload(data.payload);
+      return { id: data.id, type: data.type, payload: { user: payload } };
+    }
+    case ResponseTypes.activeUsers:
+    case ResponseTypes.inactiveUsers: {
+      const payload = returnTypeCheckedUsersPayload(data.payload);
+      return { id: data.id, type: data.type, payload: { users: payload } };
+    }
+    case ResponseTypes.messageHistory: {
+      const payload = returnCheckedMessageFromUserPayload(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
+    case ResponseTypes.oneMessage: {
+      const payload = returnTypeCheckedMessagePayload(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
+    case ResponseTypes.readMessage: {
+      const payload = returnCheckedReadChangeStatus(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
+    default: {
+      throw new Error('Something strange');
+    }
+  }
+}
+
+// OLD CODE
+// function checkTypeAndPayload(data: {
+//   id: string | null;
+//   type: unknown;
+//   payload: unknown;
+// }) {
+//   switch (data.type) {
+//     case ResponseTypes.thirdLogin:
+//     case ResponseTypes.thirdLogout:
+//     case ResponseTypes.logout:
+//     case ResponseTypes.login: {
+//       const payload = returnTypeCheckedLoginPayload(data.payload);
+//       return { id: data.id, type: data.type, payload: { user: payload } };
+//     }
+//     case ResponseTypes.activeUsers:
+//     case ResponseTypes.inactiveUsers: {
+//       if (!data.id) throw new Error('Received id does not comply to awaited');
+//       const payload = returnTypeCheckedUsersPayload(data.payload);
+//       return { id: data.id, type: data.type, payload: { users: payload } };
+//     }
+//     case ResponseTypes.messageHistory: {
+//       if (!data.id) throw new Error('Received id does not comply to awaited');
+//       const payload = returnCheckedMessageFromUserPayload(data.payload);
+//       return { id: data.id, type: data.type, payload: payload };
+//     }
+//     case ResponseTypes.oneMessage: {
+//       const payload = returnTypeCheckedMessagePayload(data.payload);
+//       return { id: data.id, type: data.type, payload: payload };
+//     }
+//     case ResponseTypes.readMessage: {
+//       const payload = returnCheckedReadChangeStatus(data.payload);
+//       return { id: data.id, type: data.type, payload: payload };
+//     }
+//     default: {
+//       throw new Error('Something strange');
+//     }
+//   }
+// }
 
 function returnTypeCheckedUsersPayload(payload: unknown) {
   if (typeof payload !== 'object' || !payload)

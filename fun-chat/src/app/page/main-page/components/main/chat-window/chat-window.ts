@@ -47,6 +47,7 @@ export default class ChatWindow extends BaseComponent {
 
   addMessageToChat(messageData: Message) {
     const messageBlock = new MessageComponent(messageData);
+    console.log(messageData, this.separateLine, messageData.status.isReaded);
     if (
       messageData.from === this.login &&
       !this.separateLine &&
@@ -65,7 +66,7 @@ export default class ChatWindow extends BaseComponent {
     this.allMessages.push(messageBlock);
 
     if (!this.separateLine) {
-      this.messageList.getNode().scrollTop = this.getNode().scrollHeight;
+      messageBlock.getNode().scrollIntoView();
     }
   }
 
@@ -85,6 +86,7 @@ export default class ChatWindow extends BaseComponent {
           unreadMessage.messageId,
         );
       }
+      this.separateLine = undefined;
     }
   }
 

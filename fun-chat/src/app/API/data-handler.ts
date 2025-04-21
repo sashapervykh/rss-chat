@@ -5,10 +5,11 @@ import { api } from './api';
 import {
   MessageHistoryResponse,
   ReadChangeResponse,
+  RequestsByServer,
+  ResponsesToUser,
+  ResponseToUserLog,
   ResponseTypes,
-  ServerLogResponse,
   ServerMessageResponse,
-  ServerResponses,
   ServerUsersResponse,
 } from './types';
 
@@ -22,7 +23,7 @@ export default class DataHandler {
   isOpeningDialogue = false;
   statusOfChosenUser: 'online' | 'offline' = 'offline';
 
-  processResponseToUser(data: ServerResponses) {
+  processResponseToUser(data: ResponsesToUser) {
     console.log(data);
     switch (data.type) {
       case ResponseTypes.login: {
@@ -60,7 +61,7 @@ export default class DataHandler {
     }
   }
 
-  processRequestFromServer(data: ServerResponses) {
+  processRequestFromServer(data: RequestsByServer) {
     console.log(data);
 
     switch (data.type) {
@@ -103,7 +104,7 @@ export default class DataHandler {
     this.statusOfChosenUser = 'offline';
   }
 
-  private doWhenUserLogIn(data: ServerLogResponse) {
+  private doWhenUserLogIn(data: ResponseToUserLog) {
     clearBody();
     history.replaceState('main', '', '/main');
     this.mainPage.createMainPage({ userName: data.payload.user.login });

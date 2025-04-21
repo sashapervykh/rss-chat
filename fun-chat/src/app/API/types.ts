@@ -1,34 +1,28 @@
-export type ServerResponses =
-  | ServerLogResponse
+export type ResponsesToUser =
+  | ResponseToUserLog
   | ServerUsersResponse
   | ServerErrorResponse
   | ServerMessageResponse
   | MessageHistoryResponse
   | ReadChangeResponse;
 
-export interface ReadChangeResponse {
-  id: string | null;
-  type: ResponseTypes.readMessage;
-  payload: {
-    message: {
-      id: string;
-      status: {
-        isReaded: boolean;
-      };
-    };
-  };
-}
-export interface MessageHistoryResponse {
+export type RequestsByServer =
+  | ResponseToThirdPartyLog
+  | ServerUsersResponse
+  | ServerErrorResponse
+  | ServerMessageResponse
+  | MessageHistoryResponse
+  | ReadChangeResponse;
+
+export interface ResponseToUserLog {
   id: string;
-  type: ResponseTypes.messageHistory;
-  payload: {
-    messages: Message[];
-  };
+  type: UserLogTypes;
+  payload: LoginPayload;
 }
 
-export interface ServerLogResponse {
-  id: string | null;
-  type: UserLogTypes;
+export interface ResponseToThirdPartyLog {
+  id: null;
+  type: OtherUserLogTypes;
   payload: LoginPayload;
 }
 
@@ -78,9 +72,9 @@ interface User {
   isLogined: boolean;
 }
 
-export type UserLogTypes =
-  | ResponseTypes.login
-  | ResponseTypes.logout
+export type UserLogTypes = ResponseTypes.login | ResponseTypes.logout;
+
+export type OtherUserLogTypes =
   | ResponseTypes.thirdLogin
   | ResponseTypes.thirdLogout;
 
@@ -101,5 +95,25 @@ export interface Message {
     isDelivered: boolean;
     isReaded: boolean;
     isEdited: boolean;
+  };
+}
+
+export interface ReadChangeResponse {
+  id: string | null;
+  type: ResponseTypes.readMessage;
+  payload: {
+    message: {
+      id: string;
+      status: {
+        isReaded: boolean;
+      };
+    };
+  };
+}
+export interface MessageHistoryResponse {
+  id: string;
+  type: ResponseTypes.messageHistory;
+  payload: {
+    messages: Message[];
   };
 }
