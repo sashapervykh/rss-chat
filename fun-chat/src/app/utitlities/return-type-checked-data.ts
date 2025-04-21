@@ -41,7 +41,6 @@ export default function returnTypeCheckedData(
   });
 }
 
-// REFACTORED CODE
 function returnCheckedTypeAndPayloadForUserRequest(data: {
   id: string;
   type: unknown;
@@ -70,6 +69,10 @@ function returnCheckedTypeAndPayloadForUserRequest(data: {
       const payload = returnCheckedReadChangeStatus(data.payload);
       return { id: data.id, type: data.type, payload: payload };
     }
+    case ResponseTypes.deleteMessage: {
+      const payload = returnDeletePayload(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
     default: {
       throw new Error('Something strange');
     }
@@ -95,50 +98,15 @@ function returnCheckedTypeAndPayloadForServerRequest(data: {
       const payload = returnCheckedReadChangeStatus(data.payload);
       return { id: data.id, type: data.type, payload: payload };
     }
+    case ResponseTypes.deleteMessage: {
+      const payload = returnDeletePayload(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
     default: {
       throw new Error('Something strange');
     }
   }
 }
-
-// OLD CODE
-// function checkTypeAndPayload(data: {
-//   id: string | null;
-//   type: unknown;
-//   payload: unknown;
-// }) {
-//   switch (data.type) {
-//     case ResponseTypes.thirdLogin:
-//     case ResponseTypes.thirdLogout:
-//     case ResponseTypes.logout:
-//     case ResponseTypes.login: {
-//       const payload = returnTypeCheckedLoginPayload(data.payload);
-//       return { id: data.id, type: data.type, payload: { user: payload } };
-//     }
-//     case ResponseTypes.activeUsers:
-//     case ResponseTypes.inactiveUsers: {
-//       if (!data.id) throw new Error('Received id does not comply to awaited');
-//       const payload = returnTypeCheckedUsersPayload(data.payload);
-//       return { id: data.id, type: data.type, payload: { users: payload } };
-//     }
-//     case ResponseTypes.messageHistory: {
-//       if (!data.id) throw new Error('Received id does not comply to awaited');
-//       const payload = returnCheckedMessageFromUserPayload(data.payload);
-//       return { id: data.id, type: data.type, payload: payload };
-//     }
-//     case ResponseTypes.oneMessage: {
-//       const payload = returnTypeCheckedMessagePayload(data.payload);
-//       return { id: data.id, type: data.type, payload: payload };
-//     }
-//     case ResponseTypes.readMessage: {
-//       const payload = returnCheckedReadChangeStatus(data.payload);
-//       return { id: data.id, type: data.type, payload: payload };
-//     }
-//     default: {
-//       throw new Error('Something strange');
-//     }
-//   }
-// }
 
 function returnTypeCheckedUsersPayload(payload: unknown) {
   if (typeof payload !== 'object' || !payload)
@@ -380,4 +348,40 @@ function returnCheckedReadChangeStatus(payload: unknown) {
     throw new TypeError('ReadChange payload has the wrong type.');
   }
   return { message: { id: message.id, status: { isReaded: status.isReaded } } };
+}
+
+function returnDeletePayload(payload: unknown) {
+  const objectPayload = returnObject(payload);
+  if (
+    Object.keys(objectPayload).length !== 1 ||
+    !('message' in objectPayload)
+  ) {
+    throw new Error('ReadChange payload has the wrong type.');
+  }
+
+  const message = returnObject(objectPayload.message);
+  if (
+    Object.keys(message).length !== 2 ||
+    !('id' in message) ||
+    !('status' in message)
+  ) {
+    throw new Error('ReadChange payload has the wrong type.');
+  }
+
+  if (typeof message.id !== 'string') {
+    throw new TypeError('ReadChange payload has the wrong type.');
+  }
+
+  const status = returnObject(message.status);
+
+  if (Object.keys(status).length !== 1 || !('isDeleted' in status)) {
+    throw new Error('ReadChange payload has the wrong type.');
+  }
+
+  if (typeof status.isDeleted !== 'boolean') {
+    throw new TypeError('ReadChange payload has the wrong type.');
+  }
+  return {
+    message: { id: message.id, status: { isDeleted: status.isDeleted } },
+  };
 }

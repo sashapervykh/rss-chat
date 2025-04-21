@@ -4,13 +4,15 @@ export type ResponsesToUser =
   | ServerErrorResponse
   | SendingMessageResponse
   | MessageHistoryResponse
-  | ReadByUserResponse;
+  | ReadByUserResponse
+  | DeleteByUserResponse;
 
 export type RequestsByServer =
   | ResponseToThirdPartyLog
   | ServerErrorResponse
   | ReceivingMessageResponse
-  | ReadByOtherResponse;
+  | ReadByOtherResponse
+  | DeleteByOtherResponse;
 
 export interface ResponseToUserLog {
   id: string;
@@ -61,6 +63,7 @@ export enum ResponseTypes {
   messageHistory = 'MSG_FROM_USER',
   oneMessage = 'MSG_SEND',
   readMessage = 'MSG_READ',
+  deleteMessage = 'MSG_DELETE',
 }
 
 export interface ErrorPayload {
@@ -133,5 +136,31 @@ export interface MessageHistoryResponse {
   type: ResponseTypes.messageHistory;
   payload: {
     messages: Message[];
+  };
+}
+
+export interface DeleteByUserResponse {
+  id: string;
+  type: ResponseTypes.deleteMessage;
+  payload: {
+    message: {
+      id: string;
+      status: {
+        isDeleted: boolean;
+      };
+    };
+  };
+}
+
+export interface DeleteByOtherResponse {
+  id: null;
+  type: ResponseTypes.deleteMessage;
+  payload: {
+    message: {
+      id: string;
+      status: {
+        isDeleted: boolean;
+      };
+    };
   };
 }
