@@ -117,13 +117,17 @@ export default class DataHandler {
 
   private doWhenUserLogIn(data: ResponseToUserLog) {
     clearBody();
-    history.replaceState('main', '', '/main');
+    history.replaceState('main', '', '/sashapervykh-JSFE2024Q4/fun-chat/login');
     this.mainPage.createMainPage({ userName: data.payload.user.login });
   }
 
   private doWhenUserLogOut() {
     clearBody();
-    history.replaceState('login', '', '/login');
+    history.replaceState(
+      'login',
+      '',
+      '/sashapervykh-JSFE2024Q4/fun-chat/login',
+    );
     const loginPage = new LoginPage();
     loginPage.createLoginPage();
     sessionStorage.removeItem('login');

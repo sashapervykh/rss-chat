@@ -35,7 +35,7 @@ function loadAboutPage(): void {
 function loadLoginPage(state?: string): void {
   const storedLogin = sessionStorage.getItem('login');
   if (storedLogin) {
-    history.replaceState('main', '', '/main');
+    history.replaceState('main', '', '/sashapervykh-JSFE2024Q4/fun-chat/main');
   } else {
     createLoginPageContent(state);
   }
