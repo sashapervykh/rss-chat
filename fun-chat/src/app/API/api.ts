@@ -12,8 +12,6 @@ class API {
 
   constructor() {
     this.websocket.addEventListener('open', () => {
-      console.log(1);
-
       if (this.connectingMessage.isOpen) {
         this.connectingMessage.close();
         this.resendLogRequest();

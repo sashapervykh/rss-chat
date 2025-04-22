@@ -1,4 +1,4 @@
 .dialog-button {
-  margin-top: 10px;
-  margin: 0px auto;
+  display: flex;
+  margin: 10px auto 0px auto;
 }

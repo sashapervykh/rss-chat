@@ -3,7 +3,7 @@ import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
 import returnNonNullableValue from '../utitlities/return-defined-value';
 import { api } from './api';
-import ErrorMessage from './components/error-message';
+import ErrorMessage from './components/error-message/error-message';
 import {
   DeleteByOtherResponse,
   DeleteByUserResponse,
@@ -256,6 +256,7 @@ export default class DataHandler {
   processErrorMessage(data: ErrorToUserResponse | ErrorFromServerResponse) {
     const errorMessage = new ErrorMessage(data.payload.error);
     document.body.append(errorMessage.getNode());
+    sessionStorage.clear();
     errorMessage.open();
   }
 }

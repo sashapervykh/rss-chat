@@ -1,5 +1,6 @@
 import BaseComponent from '../../../shared/base-component/base-component';
 import ButtonComponent from '../../../shared/button-component/button-component';
+import './error-message.css';
 
 export default class ErrorMessage extends BaseComponent {
   constructor(text: string) {
@@ -9,6 +10,7 @@ export default class ErrorMessage extends BaseComponent {
     this.addChildren([
       new BaseComponent({
         tag: 'div',
+        styles: ['dialog-wrapper'],
         children: [
           new BaseComponent({ tag: 'div', text: text }),
           new ButtonComponent({
