@@ -1,7 +1,26 @@
 .chat-main {
   display: grid;
   grid-template-columns: 1fr 4fr;
-
   height: 80vh;
   margin-top: 0px;
+  padding: 20px 10px;
+}
+
+@media (max-width: 1000px) {
+  .chat-main {
+    grid-template-columns: 1fr 3fr;
+  }
+}
+
+@media (max-width: 780px) {
+  .chat-main {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .chat-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 30% 70%;
+  }
 }

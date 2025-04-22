@@ -11,3 +11,15 @@
   font-size: 20px;
   padding-left: 20px;
 }
+
+@media (max-width: 600px) {
+  .user-list-area {
+    grid-template-rows: 30px auto;
+    height: auto;
+  }
+
+  .user-list {
+    overflow: scroll;
+    border-bottom: 2px dashed solid;
+  }
+}

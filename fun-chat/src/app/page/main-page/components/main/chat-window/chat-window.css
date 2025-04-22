@@ -12,3 +12,10 @@
 .message-list {
   overflow-y: scroll;
 }
+
+@media (max-width: 600px) {
+  .chat-window {
+    height: auto;
+    overflow: hidden;
+  }
+}
