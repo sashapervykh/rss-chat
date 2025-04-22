@@ -19,6 +19,7 @@ export default class UserListArea extends BaseComponent {
   }
 
   addAreaChildren() {
+    console.log(2);
     api.sendUsersRequestToServer();
     if (!this.mainPage.chatWindow)
       throw new Error('Information about chat window is not received');

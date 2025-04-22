@@ -3,6 +3,7 @@ import { dataHandler } from '../API/data-handler';
 import { ResponseTypes } from '../API/types';
 import AboutPage from '../page/about-page/about-page';
 import LoginPage from '../page/login-page/login-page';
+import clearBody from '../utitlities/clear-body';
 
 export function routePages(): void {
   const hash = globalThis.location.hash;
@@ -51,7 +52,7 @@ function createLoginPageContent() {
 }
 
 function loadMainPage(): void {
-  document.body.replaceChildren();
+  clearBody();
   const storedLogin = sessionStorage.getItem('login');
   const storedPassword = sessionStorage.getItem('password');
   if (storedLogin) {

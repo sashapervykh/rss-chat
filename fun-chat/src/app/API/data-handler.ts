@@ -13,7 +13,6 @@ import {
   RequestsByServer,
   ResponsesToUser,
   ResponseToThirdPartyLog,
-  ResponseToUserLog,
   ResponseTypes,
   SendingMessageResponse,
   ServerUsersResponse,
@@ -32,7 +31,7 @@ export default class DataHandler {
   processResponseToUser(data: ResponsesToUser) {
     switch (data.type) {
       case ResponseTypes.login: {
-        this.doWhenUserLogIn(data);
+        this.doWhenUserLogIn();
         break;
       }
       case ResponseTypes.logout: {
@@ -115,10 +114,11 @@ export default class DataHandler {
     this.statusOfChosenUser = 'offline';
   }
 
-  private doWhenUserLogIn(data: ResponseToUserLog) {
-    clearBody();
-    globalThis.location.assign('#/main');
-    this.mainPage.createMainPage({ userName: data.payload.user.login });
+  private doWhenUserLogIn() {
+    if (location.hash !== '#/main') {
+      clearBody();
+      globalThis.location.assign('#/main');
+    }
   }
 
   private doWhenUserLogOut() {
@@ -130,6 +130,7 @@ export default class DataHandler {
   }
 
   private drawUsersList(data: ServerUsersResponse) {
+    console.log(1);
     if (this.mainPage.usersUl) {
       for (const user of data.payload.users) {
         if (user.login === this.currentUser) continue;

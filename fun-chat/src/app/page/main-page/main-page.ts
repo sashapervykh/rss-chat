@@ -9,6 +9,7 @@ export default class MainPage {
   chatWindow: ChatWindow | undefined;
 
   createMainPage({ userName }: { userName: string }) {
+    console.log(4);
     const header = new HeaderComponent({ userName: userName });
     const footer = new FooterComponent();
     const chatComponent = new ChatComponent(this);
