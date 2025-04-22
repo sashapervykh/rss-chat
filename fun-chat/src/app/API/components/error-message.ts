@@ -2,7 +2,6 @@ import BaseComponent from '../../shared/base-component/base-component';
 
 export default class ErrorMessage extends BaseComponent {
   isOpen = false;
-  dotCounter = 3;
   message = new BaseComponent({ tag: 'div', text: 'Connection to server...' });
 
   constructor() {
@@ -27,16 +26,5 @@ export default class ErrorMessage extends BaseComponent {
     node.close();
     this.isOpen = false;
     this.removeThisNode();
-  }
-
-  changeText() {
-    if (this.dotCounter === 3) {
-      this.dotCounter = 1;
-    } else {
-      this.dotCounter++;
-    }
-    this.message.setTextContent(
-      `Connection to server ${'.'.repeat(this.dotCounter)}`,
-    );
   }
 }
