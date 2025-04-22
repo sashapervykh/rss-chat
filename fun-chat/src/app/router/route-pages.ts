@@ -4,24 +4,26 @@ import { ResponseTypes } from '../API/types';
 import AboutPage from '../page/about-page/about-page';
 import LoginPage from '../page/login-page/login-page';
 
-export function routePages(state: string): void {
-  switch (state) {
-    case 'main': {
+export function routePages(): void {
+  const hash = globalThis.location.hash;
+
+  switch (hash) {
+    case '#/main': {
       loadMainPage();
       break;
     }
 
-    case 'about': {
+    case '#/about': {
       loadAboutPage();
       break;
     }
 
-    case 'login': {
+    case '#/login': {
       loadLoginPage();
       break;
     }
     default: {
-      loadLoginPage(state);
+      loadLoginPage();
     }
   }
 }
@@ -32,26 +34,17 @@ function loadAboutPage(): void {
   aboutPage.createAboutPage();
 }
 
-function loadLoginPage(state?: string): void {
+function loadLoginPage(): void {
   const storedLogin = sessionStorage.getItem('login');
   if (storedLogin) {
-    history.replaceState('main', '', '/sashapervykh-JSFE2024Q4/fun-chat/main');
+    globalThis.location.assign('#/main');
   } else {
-    createLoginPageContent(state);
+    globalThis.location.assign('#/login');
+    createLoginPageContent();
   }
 }
 
-function createLoginPageContent(state?: string) {
-  if (state && state !== 'login') {
-    history.replaceState(
-      'login',
-      '',
-      '/sashapervykh-JSFE2024Q4/fun-chat/login',
-    );
-  } else {
-    history.replaceState('login', '', '/login');
-  }
-
+function createLoginPageContent() {
   document.body.replaceChildren();
   const loginPage = new LoginPage();
   loginPage.createLoginPage();
@@ -85,6 +78,7 @@ function loadMainPage(): void {
       });
     }
   } else {
+    globalThis.location.assign('#/login');
     createLoginPageContent();
   }
 }

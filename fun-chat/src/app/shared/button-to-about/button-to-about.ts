@@ -7,7 +7,7 @@ export const buttonToAbout = (styles: string[]) =>
     styles: styles,
     onClickAction: () => {
       document.body.replaceChildren();
-      history.pushState('about', '', '/sashapervykh-JSFE2024Q4/fun-chat/about');
+      globalThis.location.assign('#/about');
       const aboutPage = new AboutPage();
       aboutPage.createAboutPage();
     },
