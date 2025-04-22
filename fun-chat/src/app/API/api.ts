@@ -2,13 +2,33 @@ import {
   returnTypeCheckedDataWithNullId,
   returnTypeCheckedDataWithStringId,
 } from '../utitlities/return-type-checked-data';
+import ConnectingMessage from './components/connecting-message';
 import { dataHandler } from './data-handler';
 import { ResponseTypes, UserLoginData } from './types';
 
 class API {
   websocket = new WebSocket('ws://localhost:4000');
+  connectingMessage = new ConnectingMessage();
+  interval: number | undefined;
 
   constructor() {
+    this.websocket.addEventListener('open', () => {
+      console.log(1);
+      if (this.interval) {
+        clearInterval(this.interval);
+      }
+      if (this.connectingMessage.isOpen) {
+        this.connectingMessage.close();
+      }
+      this.resendLogRequest();
+    });
+
+    this.websocket.addEventListener('close', (event) => {
+      if (event.code !== 1000) {
+        this.reconnect();
+      }
+    });
+
     this.websocket.addEventListener('error', (event) => {
       console.log(event);
     });
@@ -128,6 +148,26 @@ class API {
     };
     this.websocket.send(JSON.stringify(request));
   }
+
+  resendLogRequest() {
+    const storedLogin = sessionStorage.getItem('login');
+    const storedPassword = sessionStorage.getItem('password');
+    if (storedLogin && storedPassword) {
+      api.sendLogRequestToServer({
+        id: storedLogin,
+        type: ResponseTypes.login,
+        login: storedLogin,
+        password: storedPassword,
+      });
+    }
+  }
+
+  private reconnect() {
+    if (this.connectingMessage.isOpen) this.connectingMessage.removeThisNode();
+    api = new API();
+    document.body.append(api.connectingMessage.getNode());
+    api.connectingMessage.open();
+  }
 }
 
-export const api = new API();
+export let api = new API();
