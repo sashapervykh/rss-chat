@@ -1,5 +1,9 @@
 body {
-  display: flex;
+  margin: 0px auto;
   max-width: 1440px;
   background-color: #f9f9f9;
+}
+
+button:hover {
+  cursor: pointer;
 }
