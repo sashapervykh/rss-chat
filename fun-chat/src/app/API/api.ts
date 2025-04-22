@@ -25,12 +25,11 @@ class API {
     });
 
     this.websocket.addEventListener('error', (event) => {
-      console.log(event);
+      console.error(event);
     });
 
     this.websocket.addEventListener('message', (event) => {
       const response = returnTypeCheckedDataWithStringId(event.data);
-      console.log(response);
       if (response) {
         dataHandler.processResponseToUser(response);
         return;

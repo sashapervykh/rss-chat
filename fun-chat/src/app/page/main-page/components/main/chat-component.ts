@@ -15,7 +15,6 @@ export default class ChatComponent extends MainComponent {
   }
 
   addChatComponent() {
-    console.log(3);
     this.mainPage.chatWindow = new ChatWindow();
     const userListArea = new UserListArea(this.mainPage);
     this.addChildren([userListArea, this.mainPage.chatWindow]);

@@ -59,17 +59,10 @@ function loadMainPage(): void {
     if (!storedPassword) throw new Error('Password was not saved');
 
     if (api.websocket.readyState === 1) {
+      console.log('kkkk');
       dataHandler.mainPage.createMainPage({ userName: storedLogin });
-      // api.sendLogRequestToServer({
-      //   id: 'Log In',
-      //   type: ResponseTypes.login,
-      //   login: storedLogin,
-      //   password: storedPassword,
-      // });
-      // console.log('new request');
     } else if (api.websocket.readyState === 0) {
       api.websocket.addEventListener('open', () => {
-        console.log(storedLogin);
         dataHandler.mainPage.createMainPage({ userName: storedLogin });
         api.sendLogRequestToServer({
           id: 'Log In',

@@ -31,6 +31,5 @@ export default class MessageText extends BaseComponent {
     this.text = value;
     this.setTextContent(this.text);
     this.addStyles(['edited']);
-    console.log('text is changed');
   }
 }
