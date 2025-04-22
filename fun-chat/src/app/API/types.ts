@@ -14,7 +14,8 @@ export type RequestsByServer =
   | ReceivingMessageResponse
   | ReadByOtherResponse
   | DeleteByOtherResponse
-  | EditByOtherResponse;
+  | EditByOtherResponse
+  | MessageDeliverResponse;
 
 export interface ResponseToUserLog {
   id: string;
@@ -73,6 +74,7 @@ export enum ResponseTypes {
   readMessage = 'MSG_READ',
   deleteMessage = 'MSG_DELETE',
   editMessage = 'MSG_EDIT',
+  deliverMessage = 'MSG_DELIVER',
 }
 
 export interface ErrorPayload {
@@ -197,6 +199,19 @@ export interface EditByOtherResponse {
       text: string;
       status: {
         isEdited: boolean;
+      };
+    };
+  };
+}
+
+export interface MessageDeliverResponse {
+  id: null;
+  type: ResponseTypes.deliverMessage;
+  payload: {
+    message: {
+      id: string;
+      status: {
+        isDelivered: boolean;
       };
     };
   };

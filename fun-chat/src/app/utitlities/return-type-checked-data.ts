@@ -171,6 +171,10 @@ function returnCheckedTypeAndPayloadForServerRequest(
       const payload = returnEditPayload(data.payload);
       return { id: data.id, type: data.type, payload: payload };
     }
+    case ResponseTypes.deliverMessage: {
+      const payload = returnDeliverPayload(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
     case ResponseTypes.error: {
       const payload = returnTypeCheckedErrorPayload(data.payload);
       return { id: data.id, type: data.type, payload: payload };
@@ -494,6 +498,41 @@ function returnEditPayload(payload: unknown) {
       id: message.id,
       text: message.text,
       status: { isEdited: status.isEdited },
+    },
+  };
+}
+
+function returnDeliverPayload(payload: unknown) {
+  const objectPayload = returnObject(payload);
+  if (
+    Object.keys(objectPayload).length !== 1 ||
+    !('message' in objectPayload)
+  ) {
+    throw new Error('Deliver payload has the wrong type.');
+  }
+  const message = returnObject(objectPayload.message);
+  if (
+    Object.keys(message).length !== 2 ||
+    !('id' in message) ||
+    !('status' in message)
+  ) {
+    throw new Error('Edit payload has the wrong type.');
+  }
+  if (typeof message.id !== 'string') {
+    throw new TypeError('Edit payload has the wrong type.');
+  }
+
+  const status = returnObject(message.status);
+  if (Object.keys(status).length !== 1 || !('isDelivered' in status)) {
+    throw new Error('ReadChange payload has the wrong type.');
+  }
+  if (typeof status.isDelivered !== 'boolean') {
+    throw new TypeError('ReadChange payload has the wrong type.');
+  }
+  return {
+    message: {
+      id: message.id,
+      status: { isDelivered: status.isDelivered },
     },
   };
 }

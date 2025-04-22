@@ -11,6 +11,7 @@ import {
   EditByUserResponse,
   ErrorFromServerResponse,
   ErrorToUserResponse,
+  MessageDeliverResponse,
   MessageHistoryResponse,
   ReadByOtherResponse,
   RequestsByServer,
@@ -99,6 +100,10 @@ export default class DataHandler {
       }
       case ResponseTypes.editMessage: {
         this.processEditByOtherResponse(data);
+        break;
+      }
+      case ResponseTypes.deliverMessage: {
+        this.processDeliverResponse(data);
         break;
       }
       default: {
@@ -235,6 +240,17 @@ export default class DataHandler {
     editedMessage?.messageInfo.changeTextOfStatus(
       'isEdited',
       data.payload.message.status.isEdited,
+    );
+  }
+
+  private processDeliverResponse(data: MessageDeliverResponse) {
+    const chatWindow = returnNonNullableValue(this.mainPage.chatWindow);
+    const editedMessage = chatWindow.allMessages.find(
+      (message) => message.messageId === data.payload.message.id,
+    );
+    editedMessage?.messageInfo.changeTextOfStatus(
+      'isDelivered',
+      data.payload.message.status.isDelivered,
     );
   }
 
