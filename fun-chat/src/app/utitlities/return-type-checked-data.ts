@@ -1,4 +1,11 @@
-import { RequestsByServer, ResponsesToUser, ResponseTypes } from '../API/types';
+import {
+  MessageHistoryResponse,
+  RequestsByServer,
+  ResponsesToUser,
+  ResponseToUserLog,
+  ResponseTypes,
+  ServerUsersResponse,
+} from '../API/types';
 
 export function returnTypeCheckedDataWithStringId(
   data: unknown,
@@ -74,17 +81,14 @@ function returnCheckedTypeAndPayloadForUserRequest(
   switch (data.type) {
     case ResponseTypes.logout:
     case ResponseTypes.login: {
-      const payload = returnTypeCheckedLoginPayload(data.payload);
-      return { id: data.id, type: data.type, payload: { user: payload } };
+      return processLogData(data);
     }
     case ResponseTypes.activeUsers:
     case ResponseTypes.inactiveUsers: {
-      const payload = returnTypeCheckedUsersPayload(data.payload);
-      return { id: data.id, type: data.type, payload: { users: payload } };
+      return processUsersData(data);
     }
     case ResponseTypes.messageHistory: {
-      const payload = returnCheckedMessageFromUserPayload(data.payload);
-      return { id: data.id, type: data.type, payload: payload };
+      return processMessageHistoryData(data);
     }
     case ResponseTypes.oneMessage: {
       const payload = returnTypeCheckedMessagePayload(data.payload);
@@ -102,11 +106,44 @@ function returnCheckedTypeAndPayloadForUserRequest(
       const payload = returnEditPayload(data.payload);
       return { id: data.id, type: data.type, payload: payload };
     }
+    case ResponseTypes.error: {
+      const payload = returnTypeCheckedErrorPayload(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
     default: {
-      console.log(data);
       throw new Error('Something strange');
     }
   }
+}
+
+function processLogData(data: DataWithStringId): ResponseToUserLog {
+  if (
+    !(data.type === ResponseTypes.login || data.type === ResponseTypes.logout)
+  )
+    throw new Error('There is an error in data');
+  const payload = returnTypeCheckedLoginPayload(data.payload);
+  return { id: data.id, type: data.type, payload: { user: payload } };
+}
+
+function processUsersData(data: DataWithStringId): ServerUsersResponse {
+  if (
+    !(
+      data.type === ResponseTypes.activeUsers ||
+      data.type === ResponseTypes.inactiveUsers
+    )
+  )
+    throw new Error('There is an error in data');
+  const payload = returnTypeCheckedUsersPayload(data.payload);
+  return { id: data.id, type: data.type, payload: { users: payload } };
+}
+
+function processMessageHistoryData(
+  data: DataWithStringId,
+): MessageHistoryResponse {
+  if (!(data.type === ResponseTypes.messageHistory))
+    throw new Error('There is an error in data');
+  const payload = returnCheckedMessageFromUserPayload(data.payload);
+  return { id: data.id, type: data.type, payload: payload };
 }
 
 function returnCheckedTypeAndPayloadForServerRequest(
@@ -132,6 +169,10 @@ function returnCheckedTypeAndPayloadForServerRequest(
     }
     case ResponseTypes.editMessage: {
       const payload = returnEditPayload(data.payload);
+      return { id: data.id, type: data.type, payload: payload };
+    }
+    case ResponseTypes.error: {
+      const payload = returnTypeCheckedErrorPayload(data.payload);
       return { id: data.id, type: data.type, payload: payload };
     }
     default: {
@@ -203,23 +244,23 @@ function returnLoginAndStatus(data: unknown) {
   return { login: data.login, isLogined: data.isLogined };
 }
 
-// function returnTypeCheckedErrorPayload(payload: unknown) {
-//   if (typeof payload !== 'object' || !payload)
-//     throw new Error('The received payload is not an object or null');
+function returnTypeCheckedErrorPayload(payload: unknown) {
+  if (typeof payload !== 'object' || !payload)
+    throw new Error('The received payload is not an object or null');
 
-//   if (Object.keys(payload).length !== 1 || !('error' in payload)) {
-//     throw new Error(
-//       'The properties of received payload differs from awaited data.',
-//     );
-//   }
+  if (Object.keys(payload).length !== 1 || !('error' in payload)) {
+    throw new Error(
+      'The properties of received payload differs from awaited data.',
+    );
+  }
 
-//   if (typeof payload.error !== 'string')
-//     throw new TypeError(
-//       'The error properties of received payload differs from awaited data.',
-//     );
+  if (typeof payload.error !== 'string')
+    throw new TypeError(
+      'The error properties of received payload differs from awaited data.',
+    );
 
-//   return { error: payload.error };
-// }
+  return { error: payload.error };
+}
 
 function returnTypeCheckedMessagePayload(payload: unknown) {
   if (typeof payload !== 'object' || !payload)

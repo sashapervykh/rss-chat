@@ -3,11 +3,14 @@ import MainPage from '../page/main-page/main-page';
 import clearBody from '../utitlities/clear-body';
 import returnNonNullableValue from '../utitlities/return-defined-value';
 import { api } from './api';
+import ErrorMessage from './components/error-message';
 import {
   DeleteByOtherResponse,
   DeleteByUserResponse,
   EditByOtherResponse,
   EditByUserResponse,
+  ErrorFromServerResponse,
+  ErrorToUserResponse,
   MessageHistoryResponse,
   ReadByOtherResponse,
   RequestsByServer,
@@ -64,7 +67,7 @@ export default class DataHandler {
         break;
       }
       default: {
-        console.log('Something strange');
+        this.processErrorMessage(data);
       }
     }
   }
@@ -99,7 +102,8 @@ export default class DataHandler {
         break;
       }
       default: {
-        console.log('Something strange');
+        this.processErrorMessage(data);
+        console.error(data.payload.error);
       }
     }
   }
@@ -247,6 +251,12 @@ export default class DataHandler {
 
     usersUI.updateUserListForThirdPartyLogOut(data.payload.user);
     chatWindow.updateForThirdPartyLogOut(data.payload.user.login);
+  }
+
+  processErrorMessage(data: ErrorToUserResponse | ErrorFromServerResponse) {
+    const errorMessage = new ErrorMessage(data.payload.error);
+    document.body.append(errorMessage.getNode());
+    errorMessage.open();
   }
 }
 
