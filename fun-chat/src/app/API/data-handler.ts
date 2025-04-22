@@ -164,6 +164,8 @@ export default class DataHandler {
       throw new Error('There is no data about chat window');
 
     this.mainPage.chatWindow.messageList.removeChildren();
+    this.mainPage.chatWindow.allMessages = [];
+    this.mainPage.chatWindow.unreadMessages = [];
     this.mainPage.chatWindow.openDialogue(data, this.statusOfChosenUser);
   }
 
@@ -228,7 +230,8 @@ export default class DataHandler {
     const editedMessage = chatWindow.allMessages.find(
       (message) => message.messageId === data.payload.message.id,
     );
-    editedMessage?.messageText.setTextContent(data.payload.message.text);
+    console.log(editedMessage);
+    editedMessage?.messageText.changeText(data.payload.message.text);
     editedMessage?.messageInfo.changeTextOfStatus(
       'isEdited',
       data.payload.message.status.isEdited,

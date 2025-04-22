@@ -24,7 +24,13 @@ export default class MessageText extends BaseComponent {
   stopEditing(value: string) {
     const input = returnNonNullableValue<InputComponent>(this.inputForEditing);
     input.removeThisNode();
+    this.changeText(value);
+  }
+
+  changeText(value: string) {
     this.text = value;
     this.setTextContent(this.text);
+    this.addStyles(['edited']);
+    console.log('text is changed');
   }
 }
