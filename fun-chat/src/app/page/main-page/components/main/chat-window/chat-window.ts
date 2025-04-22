@@ -32,6 +32,7 @@ export default class ChatWindow extends BaseComponent {
   }
 
   openDialogue(data: MessageHistoryResponse, style: 'online' | 'offline') {
+    console.log('jjjj');
     if (!this.messageTextarea)
       throw new Error('Information about message textarea is not received');
     this.separateLine = undefined;
@@ -100,6 +101,7 @@ export default class ChatWindow extends BaseComponent {
   }
 
   updateForThirdPartyLogIn(thirdUser: string) {
+    console.log(thirdUser, this.addressee);
     if (this.addressee === thirdUser) {
       this.h2.addStyles(['online']);
       this.h2.getNode().classList.remove('offline');

@@ -30,6 +30,7 @@ class API {
 
     this.websocket.addEventListener('message', (event) => {
       const response = returnTypeCheckedDataWithStringId(event.data);
+      console.log(response);
       if (response) {
         dataHandler.processResponseToUser(response);
         return;

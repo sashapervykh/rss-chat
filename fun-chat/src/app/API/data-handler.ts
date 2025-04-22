@@ -214,6 +214,7 @@ export default class DataHandler {
     this.showAmountOfUnreadLetters(data);
     if (this.isOpeningDialogue) {
       this.showMessageHistory(data);
+      this.isOpeningDialogue = false;
     }
   }
 
