@@ -103,6 +103,7 @@ function returnCheckedTypeAndPayloadForUserRequest(
       return { id: data.id, type: data.type, payload: payload };
     }
     default: {
+      console.log(data);
       throw new Error('Something strange');
     }
   }

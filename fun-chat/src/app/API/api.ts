@@ -9,18 +9,15 @@ import { ResponseTypes, UserLoginData } from './types';
 class API {
   websocket = new WebSocket('ws://localhost:4000');
   connectingMessage = new ConnectingMessage();
-  interval: number | undefined;
 
   constructor() {
     this.websocket.addEventListener('open', () => {
       console.log(1);
-      if (this.interval) {
-        clearInterval(this.interval);
-      }
+
       if (this.connectingMessage.isOpen) {
         this.connectingMessage.close();
+        this.resendLogRequest();
       }
-      this.resendLogRequest();
     });
 
     this.websocket.addEventListener('close', (event) => {

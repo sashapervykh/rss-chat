@@ -60,12 +60,13 @@ function loadMainPage(): void {
 
     if (api.websocket.readyState === 1) {
       dataHandler.mainPage.createMainPage({ userName: storedLogin });
-      api.sendLogRequestToServer({
-        id: 'Log In',
-        type: ResponseTypes.login,
-        login: storedLogin,
-        password: storedPassword,
-      });
+      // api.sendLogRequestToServer({
+      //   id: 'Log In',
+      //   type: ResponseTypes.login,
+      //   login: storedLogin,
+      //   password: storedPassword,
+      // });
+      // console.log('new request');
     } else if (api.websocket.readyState === 0) {
       api.websocket.addEventListener('open', () => {
         console.log(storedLogin);

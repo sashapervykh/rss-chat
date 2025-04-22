@@ -130,7 +130,6 @@ export default class DataHandler {
   }
 
   private drawUsersList(data: ServerUsersResponse) {
-    console.log(1);
     if (this.mainPage.usersUl) {
       for (const user of data.payload.users) {
         if (user.login === this.currentUser) continue;
@@ -225,6 +224,7 @@ export default class DataHandler {
 
   private processEditByOtherResponse(data: EditByOtherResponse) {
     const chatWindow = returnNonNullableValue(this.mainPage.chatWindow);
+    console.log('working');
     const editedMessage = chatWindow.allMessages.find(
       (message) => message.messageId === data.payload.message.id,
     );
