@@ -76,11 +76,7 @@ export default class DataHandler {
         break;
       }
       case ResponseTypes.thirdLogout: {
-        if (!this.mainPage.usersUl)
-          throw new Error('Data about user list are not received');
-        this.mainPage.usersUl.updateUserListForThirdPartyLogOut(
-          data.payload.user,
-        );
+        this.processThirdPartyLogOut(data);
         break;
       }
       case ResponseTypes.oneMessage: {
@@ -239,9 +235,18 @@ export default class DataHandler {
   }
 
   private processThirdPartyLogIn(data: ResponseToThirdPartyLog) {
-    if (!this.mainPage.usersUl)
-      throw new Error('Data about user list are not received');
-    this.mainPage.usersUl.updateUserListForThirdPartyLogIn(data.payload.user);
+    const usersUl = returnNonNullableValue(this.mainPage.usersUl);
+    const chatWindow = returnNonNullableValue(this.mainPage.chatWindow);
+    usersUl.updateUserListForThirdPartyLogIn(data.payload.user);
+    chatWindow.updateForThirdPartyLogIn(data.payload.user.login);
+  }
+
+  private processThirdPartyLogOut(data: ResponseToThirdPartyLog) {
+    const usersUI = returnNonNullableValue(this.mainPage.usersUl);
+    const chatWindow = returnNonNullableValue(this.mainPage.chatWindow);
+
+    usersUI.updateUserListForThirdPartyLogOut(data.payload.user);
+    chatWindow.updateForThirdPartyLogOut(data.payload.user.login);
   }
 }
 

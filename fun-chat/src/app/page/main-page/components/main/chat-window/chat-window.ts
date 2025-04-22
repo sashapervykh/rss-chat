@@ -36,7 +36,7 @@ export default class ChatWindow extends BaseComponent {
       throw new Error('Information about message textarea is not received');
     this.separateLine = undefined;
     this.messageTextarea.getNode().disabled = false;
-    this.h2.setTextContent(data.id);
+    this.h2.setTextContent(`${data.id} (${style})`);
     this.addressee = data.id;
     this.h2.addStyles([style]);
     this.h2.removeStyles([style === 'online' ? 'offline' : 'online']);
@@ -97,5 +97,21 @@ export default class ChatWindow extends BaseComponent {
     this.messageList.addListenerToEvent('scroll', () => {
       this.hideSeparateLine();
     });
+  }
+
+  updateForThirdPartyLogIn(thirdUser: string) {
+    if (this.addressee === thirdUser) {
+      this.h2.addStyles(['online']);
+      this.h2.getNode().classList.remove('offline');
+      this.h2.setTextContent(`${this.addressee} (online)`);
+    }
+  }
+
+  updateForThirdPartyLogOut(thirdUser: string) {
+    if (this.addressee === thirdUser) {
+      this.h2.addStyles(['offline']);
+      this.h2.getNode().classList.remove('online');
+      this.h2.setTextContent(`${this.addressee} (offline)`);
+    }
   }
 }
