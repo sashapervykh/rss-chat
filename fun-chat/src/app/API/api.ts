@@ -1,3 +1,4 @@
+import clearBody from '../utitlities/clear-body';
 import {
   returnTypeCheckedDataWithNullId,
   returnTypeCheckedDataWithStringId,
@@ -154,6 +155,8 @@ class API {
         login: storedLogin,
         password: storedPassword,
       });
+      clearBody();
+      dataHandler.mainPage.createMainPage({ userName: storedLogin });
     }
   }
 
