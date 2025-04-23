@@ -50,6 +50,7 @@ export default class MessageComponent extends BaseComponent {
           styles: ['message-button'],
           onClickAction: () => {
             api.sendDeleteRequest(messageData.from, this.messageId);
+            console.log(this.messageId);
           },
         }),
       ],

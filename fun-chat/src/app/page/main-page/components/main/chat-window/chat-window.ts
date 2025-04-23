@@ -12,6 +12,7 @@ export default class ChatWindow extends BaseComponent {
   messageList: BaseComponent = new BaseComponent({
     tag: 'div',
     styles: ['message-list'],
+    text: 'Choose a chat to start conversation',
   });
   addressee: string | undefined;
   messageTextarea: MessageTextarea | undefined;
@@ -40,12 +41,18 @@ export default class ChatWindow extends BaseComponent {
     this.addressee = data.id;
     this.h2.addStyles([style]);
     this.h2.removeStyles([style === 'online' ? 'offline' : 'online']);
+    if (data.payload.messages.length === 0)
+      this.messageList.setTextContent('Send your first letter');
     for (const message of data.payload.messages) {
       this.addMessageToChat(message);
     }
   }
 
   addMessageToChat(messageData: Message) {
+    if (this.messageList.getNode().textContent === 'Send your first letter') {
+      this.messageList.setTextContent('');
+    }
+
     const messageBlock = new MessageComponent(messageData);
     if (
       messageData.from === this.addressee &&

@@ -191,14 +191,26 @@ export default class DataHandler {
   private removeDeletedMessage(
     data: DeleteByUserResponse | DeleteByOtherResponse,
   ) {
+    console.log(data);
     if (!this.mainPage.chatWindow)
       throw new Error('Data about chat window are not received');
-    const readMessageIndex = this.mainPage.chatWindow.allMessages.findIndex(
+    const messageIndexinAll = this.mainPage.chatWindow.allMessages.findIndex(
       (element) => element.messageId === data.payload.message.id,
     );
-    if (readMessageIndex !== -1) {
-      this.mainPage.chatWindow.allMessages[readMessageIndex].removeThisNode();
-      this.mainPage.chatWindow.allMessages.splice(readMessageIndex, 1);
+    const messageIndexInUnread =
+      this.mainPage.chatWindow.unreadMessages.findIndex(
+        (element) => element.messageId === data.payload.message.id,
+      );
+    if (messageIndexinAll !== -1) {
+      this.mainPage.chatWindow.allMessages[messageIndexinAll].removeThisNode();
+      this.mainPage.chatWindow.allMessages.splice(messageIndexinAll, 1);
+    }
+
+    if (messageIndexInUnread !== -1) {
+      this.mainPage.chatWindow.unreadMessages[
+        messageIndexInUnread
+      ].removeThisNode();
+      this.mainPage.chatWindow.unreadMessages.splice(messageIndexInUnread, 1);
     }
   }
 
@@ -272,6 +284,7 @@ export default class DataHandler {
 
   processErrorMessage(data: ErrorToUserResponse | ErrorFromServerResponse) {
     const errorMessage = new ErrorMessage(data.payload.error);
+    console.log(data);
     document.body.append(errorMessage.getNode());
     sessionStorage.clear();
     errorMessage.open();
