@@ -10,10 +10,17 @@ export default class BaseComponent {
     if (parameters.styles) this.addStyles(parameters.styles);
     if (parameters.text) this.setTextContent(parameters.text);
     if (parameters.children) this.addChildren(parameters.children);
+    if (parameters.href) this.addElementSrc(parameters.href);
   }
 
   public addChildren(children: BaseComponent[]) {
     this.node.append(...children.map((child) => child.getNode()));
+  }
+
+  public addElementSrc(source: string) {
+    if (!(this.node instanceof HTMLAnchorElement))
+      throw new Error('The element is not a link');
+    this.node.href = source;
   }
 
   public addListenerToEvent(

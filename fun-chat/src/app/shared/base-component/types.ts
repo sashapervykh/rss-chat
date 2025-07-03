@@ -5,6 +5,7 @@ export interface BaseComponentParameters {
   styles?: string[];
   text?: string;
   children?: BaseComponent[];
+  href?: string;
 }
 
 export type Callback = (event: Event) => void;
